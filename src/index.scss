@@ -72,6 +72,20 @@ label, button {
   }
 }
 
+.navigation-drawer--dark {
+  background-color: #0d1116 !important;
+
+  .navigation-bar-responsive {
+    span, p {
+      color: white;
+    }
+  }
+
+  .MuiDivider-root {
+    border-color: rgba(255, 255, 255, 0.18);
+  }
+}
+
 .container {
   margin-top: 64px;
   width: 100%;

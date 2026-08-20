@@ -106,6 +106,9 @@ function Navigation({parentToChild, modeChange}: any) {
           variant="temporary"
           open={mobileOpen}
           onClose={handleDrawerToggle}
+          PaperProps={{
+            className: `navigation-drawer${mode === 'dark' ? ' navigation-drawer--dark' : ''}`,
+          }}
           ModalProps={{
             keepMounted: true, // Better open performance on mobile.
           }}
