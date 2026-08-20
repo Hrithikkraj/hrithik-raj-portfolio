@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/static/css/main.bcfd898e.css",
+    "main.js": "/static/js/main.87d0ff2b.js",
+    "static/media/angrybird.jpg": "/static/media/angrybird.d2bf3a6b33339406a2ea.jpg",
+    "static/media/smart-skincare.png": "/static/media/smart-skincare.c890e9220e9d4e2e4433.png",
+    "static/media/real-time-sign-language.png": "/static/media/real-time-sign-language.6799857e7c27df1be360.png",
+    "static/media/bg-light.png": "/static/media/bg-light.bac0efb485244a522981.png",
+    "static/media/bg-dark.png": "/static/media/bg-dark.f420c6b8458af72de935.png",
+    "static/media/network-routing.jpg": "/static/media/network-routing.3c2d50b01310fdc650bd.jpg",
+    "static/media/profile.jpeg": "/static/media/profile.38282f3973c3d84cfd81.jpeg",
+    "static/media/network-analysis.jpg": "/static/media/network-analysis.0706b60555e9232ce989.jpg",
+    "static/media/nature-disaster-system.jpg": "/static/media/nature-disaster-system.4b6c7dc9fd1227baee31.jpg",
+    "index.html": "/index.html",
+    "main.bcfd898e.css.map": "/static/css/main.bcfd898e.css.map",
+    "main.87d0ff2b.js.map": "/static/js/main.87d0ff2b.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.bcfd898e.css",
+    "static/js/main.87d0ff2b.js"
+  ]
+}
