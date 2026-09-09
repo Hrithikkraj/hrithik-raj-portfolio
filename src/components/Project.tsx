@@ -169,6 +169,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, onClick }) =>
             layoutId={`project-image-${project.id}`}
             src={project.image}
             alt={project.title}
+            loading="lazy"
             className="proj-card__img"
             style={{
               scale: hovered ? 1.06 : 1,

@@ -117,6 +117,7 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) => {
                 layoutId={`project-image-${project.id}`}
                 src={project.image}
                 alt={project.title}
+                loading="lazy"
                 className="pm-image"
               />
               <div className="pm-image-gradient" aria-hidden="true" />

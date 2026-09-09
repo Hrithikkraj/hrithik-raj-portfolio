@@ -72,6 +72,7 @@ const socialContainerVariants: Variants = {
 function Main({ mode }: MainProps) {
   const [currentMode, setCurrentMode] = useState<'dark' | 'light'>('dark');
   const [showScrollIndicator, setShowScrollIndicator] = useState(true);
+  const reducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   // Detect active mode (via prop or DOM observer)
   useEffect(() => {
@@ -200,14 +201,14 @@ function Main({ mode }: MainProps) {
           animate={{
             opacity: 1,
             scale: 1,
-            y: [-3, 3, -3],
+            y: reducedMotion ? 0 : [-3, 3, -3],
           }}
           transition={{
             opacity: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
             scale: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
             y: {
-              duration: 4,
-              repeat: Infinity,
+              duration: reducedMotion ? 0 : 4,
+              repeat: reducedMotion ? 0 : Infinity,
               ease: "easeInOut",
             },
           }}
@@ -225,7 +226,7 @@ function Main({ mode }: MainProps) {
             glareBorderRadius="50%"
             className="parallax-avatar-tilt cursor-hover"
           >
-            <img src={profilePic} alt="Hrithik Raj" />
+            <img src={profilePic} alt="Hrithik Raj" loading="eager" />
           </Tilt>
         </motion.div>
 
@@ -293,8 +294,8 @@ function Main({ mode }: MainProps) {
               <div className="mouse-frame">
                 <motion.div
                   className="mouse-wheel"
-                  animate={{ y: [0, 7, 0], opacity: [1, 0.2, 1] }}
-                  transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
+                  animate={reducedMotion ? { y: 0, opacity: 1 } : { y: [0, 7, 0], opacity: [1, 0.2, 1] }}
+                  transition={reducedMotion ? { duration: 0 } : { duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
                 />
               </div>
               <span className="scroll-hint">Scroll</span>
