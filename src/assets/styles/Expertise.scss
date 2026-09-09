@@ -1,84 +1,366 @@
+// ─── Expertise.scss — Skills Section Styles ───────────────────
+@use '../../styles/tokens' as *;
+
+#expertise {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+// ── Subtle Animated Background Blobs ─────────────────────────
+.expertise-bg-blobs {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+
+  .blob-1 {
+    position: absolute;
+    top: 12%;
+    left: 8%;
+    width: 480px;
+    height: 480px;
+    border-radius: 50%;
+    filter: blur(65px);
+    animation: floatBlob1 18s ease-in-out infinite alternate;
+  }
+
+  .blob-2 {
+    position: absolute;
+    bottom: 8%;
+    right: 10%;
+    width: 520px;
+    height: 520px;
+    border-radius: 50%;
+    filter: blur(70px);
+    animation: floatBlob2 22s ease-in-out infinite alternate;
+  }
+}
+
+.dark-mode .expertise-bg-blobs {
+  .blob-1 {
+    background: radial-gradient(circle, rgba(124, 58, 237, 0.12) 0%, transparent 70%);
+  }
+  .blob-2 {
+    background: radial-gradient(circle, rgba(6, 182, 212, 0.09) 0%, transparent 70%);
+  }
+}
+
+.light-mode .expertise-bg-blobs {
+  .blob-1 {
+    background: radial-gradient(circle, rgba(109, 40, 217, 0.08) 0%, transparent 70%);
+  }
+  .blob-2 {
+    background: radial-gradient(circle, rgba(8, 145, 178, 0.06) 0%, transparent 70%);
+  }
+}
+
+@keyframes floatBlob1 {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(50px, -35px) scale(1.08);
+  }
+  100% {
+    transform: translate(-30px, 45px) scale(0.95);
+  }
+}
+
+@keyframes floatBlob2 {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-45px, 30px) scale(1.06);
+  }
+  100% {
+    transform: translate(35px, -40px) scale(0.94);
+  }
+}
+
+// ── Skills Container ─────────────────────────────────────────
 .skills-container {
-    padding: 5% 10%;
-    display: flex;
-    flex-direction: column;
-    text-align: left;
+  position: relative;
+  z-index: 1;
+  padding: 6% 10%;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  max-width: 1320px;
+  width: 100%;
+  box-sizing: border-box;
 
-    svg {
-        color: white;
-    }
+  .expertise-heading {
+    font-family: var(--font-heading, 'Space Grotesk', system-ui, sans-serif);
+    font-size: clamp(2.4rem, 5vw, 3.8rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin: 0 0 48px 0;
+    line-height: 1.15;
+  }
 }
-  
-.skills-container .skills-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 50px;
+
+// ── Skills Grid & Tilt Cards ─────────────────────────────────
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 36px;
+  align-items: stretch;
 }
-  
-.skills-container .skills-grid .skill {
+
+.skill-tilt-card {
+  height: 100%;
+  border-radius: 18px;
+  transform-style: preserve-3d;
+  display: flex;
+  flex-direction: column;
+}
+
+.skill {
+  height: 100%;
+  border-radius: 18px;
+  padding: 32px 28px;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  box-sizing: border-box;
+  transition: border-color 0.35s var(--ease-smooth),
+              box-shadow 0.35s var(--ease-smooth),
+              background-color 0.35s ease;
+
+  .skill-icon-wrapper {
+    margin-bottom: 22px;
+    width: 62px;
+    height: 62px;
+    border-radius: 14px;
+    display: inline-flex;
     align-items: center;
-    text-align: left;
-}
-  
-.chip {
-    color: rgb(39, 40, 34) !important;
-    background-color: white !important;
-    font-size: 0.8rem !important;
-    height: 25px !important;
-  
-    span {
-        font-family: "Lora", "Georgia", "Times New Roman", serif;
-        color: rgb(39, 40, 34);
-    }
-  
+    justify-content: center;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+
     svg {
-        height: 15px !important;
+      font-size: 2.1rem;
+      transition: color 0.3s ease, filter 0.3s ease, transform 0.3s ease;
     }
+  }
+
+  h3 {
+    font-family: var(--font-heading, 'Space Grotesk', system-ui, sans-serif);
+    font-size: 1.35rem;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1.3;
+    margin: 0 0 14px 0;
+  }
+
+  p {
+    font-family: var(--font-body, 'Inter', system-ui, sans-serif);
+    font-size: 0.96rem;
+    line-height: 1.68;
+    margin: 0 0 24px 0;
+    flex-grow: 1;
+  }
 }
 
+// ── Tech Stack Chips ─────────────────────────────────────────
 .flex-chips {
-    line-height: 2;
-    margin: 0.5;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 10px;
+
+  .chip-title {
+    font-family: var(--font-heading, 'Space Grotesk', system-ui, sans-serif);
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    width: 100%;
+    margin-bottom: 4px;
+    display: block;
+  }
+}
+
+.chip {
+  height: 28px !important;
+  border-radius: 8px !important;
+  font-size: 0.82rem !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
+  transition: background-color 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.22s ease,
+              box-shadow 0.22s ease,
+              color 0.22s ease !important;
+
+  span {
+    font-family: var(--font-body, 'Inter', system-ui, sans-serif) !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+    transition: color 0.22s ease !important;
+  }
+}
+
+// ── Dark Mode Styling ────────────────────────────────────────
+.dark-mode {
+  .skills-container .expertise-heading {
+    color: var(--text-primary, #f0f0ff);
+  }
+
+  .skill {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
+
+    &:hover {
+      border-color: rgba(124, 58, 237, 0.45);
+      box-shadow: var(--shadow-glow-primary, 0 0 25px rgba(124, 58, 237, 0.4)),
+                  0 16px 40px rgba(0, 0, 0, 0.55);
+
+      .skill-icon-wrapper svg {
+        color: var(--accent-secondary, #06b6d4);
+        filter: drop-shadow(0 0 12px rgba(6, 182, 212, 0.6));
+      }
+    }
+
+    .skill-icon-wrapper {
+      background: rgba(124, 58, 237, 0.1);
+      border: 1px solid rgba(124, 58, 237, 0.2);
+
+      svg {
+        color: #f0f0ff;
+      }
+    }
+
+    h3 {
+      color: var(--text-primary, #f0f0ff);
+    }
+
+    p {
+      color: var(--text-secondary, #a0a0c0);
+    }
 
     .chip-title {
-        color: white;
-        padding-right: 10px;
+      color: var(--accent-secondary, #06b6d4);
     }
-}
+  }
 
-.flex-chips .MuiChip-root {
-    margin-right: 0.5em;
-}
+  .chip {
+    background-color: rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
 
-.flex-chips .MuiChip-outlined {
-    background-color: #e0e0e0;
-    font-family: "Lora", "Georgia", "Times New Roman", serif;
-}
-
-.flex-chips .MuiChip-outlined span {
-    color: rgb(39, 40, 34);
-}
-
-@media screen {
-    @media (max-width: 768px) {
-        .skills-container {
-            display: block;
-            padding-left: 5%;
-            padding-right: 5%;
-        }
-    
-        .skills-container .skills-grid {
-            display: initial;
-        }
-        
-        .skills-container .skills-grid .skill {
-            padding-bottom: 5%;
-        }
+    span {
+      color: #f0f0ff !important;
     }
 
-    @media (max-width: 567px) {
-        .skills {
-            font-size: 12px;
-        }
+    &:hover {
+      background: linear-gradient(135deg, var(--accent-primary, #7c3aed), var(--accent-secondary, #06b6d4)) !important;
+      border-color: transparent !important;
+      box-shadow: 0 0 14px rgba(124, 58, 237, 0.5) !important;
+
+      span {
+        color: #ffffff !important;
+      }
     }
+  }
+}
+
+// ── Light Mode Styling ───────────────────────────────────────
+.light-mode {
+  .skills-container .expertise-heading {
+    color: var(--text-primary, #0e0e1a);
+  }
+
+  .skill {
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(0, 0, 0, 0.07);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.05);
+
+    &:hover {
+      border-color: rgba(109, 40, 217, 0.35);
+      box-shadow: var(--shadow-glow-primary, 0 0 25px rgba(109, 40, 217, 0.25)),
+                  0 16px 40px rgba(0, 0, 0, 0.08);
+
+      .skill-icon-wrapper svg {
+        color: var(--accent-primary, #6d28d9);
+        filter: drop-shadow(0 0 10px rgba(109, 40, 217, 0.45));
+      }
+    }
+
+    .skill-icon-wrapper {
+      background: rgba(109, 40, 217, 0.08);
+      border: 1px solid rgba(109, 40, 217, 0.15);
+
+      svg {
+        color: #0e0e1a;
+      }
+    }
+
+    h3 {
+      color: var(--text-primary, #0e0e1a);
+    }
+
+    p {
+      color: var(--text-secondary, #4a4a6a);
+    }
+
+    .chip-title {
+      color: var(--accent-primary, #6d28d9);
+    }
+  }
+
+  .chip {
+    background-color: rgba(0, 0, 0, 0.04) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+
+    span {
+      color: #0e0e1a !important;
+    }
+
+    &:hover {
+      background: linear-gradient(135deg, var(--accent-primary, #6d28d9), var(--accent-secondary, #0891b2)) !important;
+      border-color: transparent !important;
+      box-shadow: 0 0 12px rgba(109, 40, 217, 0.35) !important;
+
+      span {
+        color: #ffffff !important;
+      }
+    }
+  }
+}
+
+// ── Responsive Breakpoints ───────────────────────────────────
+@media screen and (max-width: 1024px) {
+  .skills-grid {
+    grid-template-columns: 1fr;
+    grid-gap: 28px;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .skills-container {
+    padding: 10% 6%;
+
+    .expertise-heading {
+      font-size: clamp(2rem, 8vw, 2.8rem);
+      margin-bottom: 32px;
+      text-align: center;
+    }
+  }
+
+  .skills-grid {
+    grid-template-columns: 1fr;
+    grid-gap: 24px;
+  }
+
+  .skill {
+    padding: 24px 20px;
+  }
 }

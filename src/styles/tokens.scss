@@ -1,0 +1,175 @@
+// ============================================================
+// DESIGN TOKENS — src/styles/tokens.scss
+// Single source of truth for all design values.
+// Import with: @use './styles/tokens' (from src/index.scss)
+// or @use '../styles/tokens' (from component-level SCSS)
+// ============================================================
+
+// ─── Typography Families ─────────────────────────────────────
+:root {
+  --font-heading:  "Lora", "Georgia", "Times New Roman", serif;
+  --font-body:     "Lora", "Georgia", "Times New Roman", serif;
+  --font-mono:     "Lora", "Georgia", "Times New Roman", serif;
+
+  // ─── Type Scale (fluid / rem-based) ──────────────────────
+  --text-xs:    0.75rem;   //  12px
+  --text-sm:    0.875rem;  //  14px
+  --text-base:  1rem;      //  16px
+  --text-md:    1.125rem;  //  18px
+  --text-lg:    1.25rem;   //  20px
+  --text-xl:    1.5rem;    //  24px
+  --text-2xl:   2rem;      //  32px
+  --text-3xl:   2.5rem;    //  40px
+  --text-4xl:   3.25rem;   //  52px
+  --text-5xl:   4.5rem;    //  72px
+
+  // ─── Spacing Scale ─────────────────────────────────────────
+  --space-1:    0.25rem;   //  4px
+  --space-2:    0.5rem;    //  8px
+  --space-3:    0.75rem;   //  12px
+  --space-4:    1rem;      //  16px
+  --space-5:    1.25rem;   //  20px
+  --space-6:    1.5rem;    //  24px
+  --space-8:    2rem;      //  32px
+  --space-10:   2.5rem;    //  40px
+  --space-12:   3rem;      //  48px
+  --space-16:   4rem;      //  64px
+  --space-20:   5rem;      //  80px
+  --space-24:   6rem;      //  96px
+
+  // ─── Border Radius Scale ───────────────────────────────────
+  --radius-sm:   0.25rem;   //  4px
+  --radius-md:   0.5rem;    //  8px
+  --radius-lg:   0.75rem;   //  12px
+  --radius-xl:   1rem;      //  16px
+  --radius-2xl:  1.5rem;    //  24px
+  --radius-full: 9999px;
+
+  // ─── Easing Curves ─────────────────────────────────────────
+  --ease-smooth:      cubic-bezier(0.16, 1, 0.3, 1);     // expo out — snappy settle
+  --ease-bounce:      cubic-bezier(0.34, 1.56, 0.64, 1); // gentle spring overshoot
+  --ease-in-soft:     cubic-bezier(0.4, 0, 1, 1);
+  --ease-out-soft:    cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out-soft: cubic-bezier(0.4, 0, 0.2, 1);
+
+  // ─── Transition Durations ──────────────────────────────────
+  --duration-fast:   150ms;
+  --duration-base:   300ms;
+  --duration-slow:   600ms;
+  --duration-slower: 900ms;
+
+  // ─── Z-Index Scale ─────────────────────────────────────────
+  --z-base:    0;
+  --z-raised:  10;
+  --z-overlay: 100;
+  --z-modal:   200;
+  --z-cursor:  9999;
+  --z-loader:  10000;
+}
+
+// ─── DARK MODE (default / class="dark-mode") ─────────────────
+:root,
+.dark-mode {
+  // Backgrounds
+  --bg-base:        #0e0e14;
+  --bg-elevated:    #13131c;
+  --bg-surface:     #1a1a28;
+  --bg-overlay:     rgba(14, 14, 20, 0.85);
+
+  // Glass / blur surface
+  --glass-bg:       rgba(255, 255, 255, 0.04);
+  --glass-border:   rgba(255, 255, 255, 0.08);
+  --glass-blur:     12px;
+
+  // Accent — Violet primary
+  --accent-primary:         #7c3aed;
+  --accent-primary-light:   #9d6bf5;
+  --accent-primary-dark:    #5b21b6;
+  --accent-primary-subtle:  rgba(124, 58, 237, 0.15);
+
+  // Accent — Cyan secondary
+  --accent-secondary:       #06b6d4;
+  --accent-secondary-light: #38d4f0;
+  --accent-secondary-dark:  #0891b2;
+  --accent-secondary-subtle: rgba(6, 182, 212, 0.12);
+
+  // Gradient
+  --gradient-brand: linear-gradient(135deg, #7c3aed 0%, #06b6d4 100%);
+  --gradient-bg:    linear-gradient(180deg, #0e0e14 0%, #13131c 100%);
+  --gradient-glow:  radial-gradient(ellipse at 50% 0%, rgba(124, 58, 237, 0.18) 0%, transparent 70%);
+
+  // Text
+  --text-primary:   #f0f0ff;
+  --text-secondary: #a0a0c0;
+  --text-muted:     #5a5a7a;
+  --text-inverse:   #0e0e14;
+
+  // Borders
+  --border-subtle:  rgba(255, 255, 255, 0.06);
+  --border-default: rgba(255, 255, 255, 0.12);
+  --border-strong:  rgba(255, 255, 255, 0.24);
+
+  // Shadows
+  --shadow-sm:    0 1px 3px rgba(0, 0, 0, 0.4), 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md:    0 4px 16px rgba(0, 0, 0, 0.5), 0 2px 6px rgba(0, 0, 0, 0.4);
+  --shadow-lg:    0 16px 40px rgba(0, 0, 0, 0.6), 0 4px 12px rgba(0, 0, 0, 0.5);
+  --shadow-xl:    0 32px 64px rgba(0, 0, 0, 0.7);
+
+  // Glow shadows — for hover states
+  --shadow-glow-primary:   0 0 20px rgba(124, 58, 237, 0.45), 0 0 60px rgba(124, 58, 237, 0.15);
+  --shadow-glow-secondary: 0 0 20px rgba(6, 182, 212, 0.45), 0 0 60px rgba(6, 182, 212, 0.15);
+  --shadow-glow-subtle:    0 0 12px rgba(124, 58, 237, 0.25);
+}
+
+// ─── LIGHT MODE (class="light-mode") ─────────────────────────
+.light-mode {
+  // Backgrounds
+  --bg-base:        #f4f4fb;
+  --bg-elevated:    #ffffff;
+  --bg-surface:     #ededf8;
+  --bg-overlay:     rgba(244, 244, 251, 0.9);
+
+  // Glass / blur surface
+  --glass-bg:       rgba(255, 255, 255, 0.6);
+  --glass-border:   rgba(0, 0, 0, 0.08);
+  --glass-blur:     16px;
+
+  // Accent — Violet primary (same hue, adjusted for light)
+  --accent-primary:         #6d28d9;
+  --accent-primary-light:   #7c3aed;
+  --accent-primary-dark:    #4c1d95;
+  --accent-primary-subtle:  rgba(109, 40, 217, 0.1);
+
+  // Accent — Cyan secondary
+  --accent-secondary:       #0891b2;
+  --accent-secondary-light: #06b6d4;
+  --accent-secondary-dark:  #0e7490;
+  --accent-secondary-subtle: rgba(8, 145, 178, 0.1);
+
+  // Gradient
+  --gradient-brand: linear-gradient(135deg, #6d28d9 0%, #0891b2 100%);
+  --gradient-bg:    linear-gradient(180deg, #f4f4fb 0%, #ededf8 100%);
+  --gradient-glow:  radial-gradient(ellipse at 50% 0%, rgba(109, 40, 217, 0.1) 0%, transparent 70%);
+
+  // Text
+  --text-primary:   #0e0e1a;
+  --text-secondary: #4a4a6a;
+  --text-muted:     #8888a8;
+  --text-inverse:   #f0f0ff;
+
+  // Borders
+  --border-subtle:  rgba(0, 0, 0, 0.05);
+  --border-default: rgba(0, 0, 0, 0.1);
+  --border-strong:  rgba(0, 0, 0, 0.2);
+
+  // Shadows
+  --shadow-sm:    0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-md:    0 4px 16px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(0, 0, 0, 0.08);
+  --shadow-lg:    0 16px 40px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-xl:    0 32px 64px rgba(0, 0, 0, 0.15);
+
+  // Glow shadows
+  --shadow-glow-primary:   0 0 20px rgba(109, 40, 217, 0.35), 0 0 60px rgba(109, 40, 217, 0.1);
+  --shadow-glow-secondary: 0 0 20px rgba(8, 145, 178, 0.35), 0 0 60px rgba(8, 145, 178, 0.1);
+  --shadow-glow-subtle:    0 0 12px rgba(109, 40, 217, 0.2);
+}

@@ -1,126 +1,415 @@
-import React, { useEffect, useState } from "react";
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
+import React, { useEffect, useState, useRef, useCallback } from "react";
+import {
+  motion,
+  AnimatePresence,
+  useMotionValue,
+  useSpring,
+  PanInfo,
+  Variants,
+} from "framer-motion";
 import DarkModeIcon from '@mui/icons-material/DarkMode';
-import Divider from '@mui/material/Divider';
-import Drawer from '@mui/material/Drawer';
-import IconButton from '@mui/material/IconButton';
 import LightModeIcon from '@mui/icons-material/LightMode';
-import List from '@mui/material/List';
-import ListIcon from '@mui/icons-material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
-import Toolbar from '@mui/material/Toolbar';
+import CloseIcon from '@mui/icons-material/Close';
+import '../assets/styles/Navigation.scss';
 
-const drawerWidth = 240;
-const navItems = [['Expertise', 'expertise'], ['History', 'history'], ['Projects', 'projects'], ['Achievements', 'achievements'], ['Contact', 'contact']];
+export interface NavigationProps {
+  parentToChild: {
+    mode: string;
+  };
+  modeChange: () => void;
+}
 
-function Navigation({parentToChild, modeChange}: any) {
+const navItems: [string, string][] = [
+  ['Expertise', 'expertise'],
+  ['History', 'history'],
+  ['Projects', 'projects'],
+  ['Achievements', 'achievements'],
+  ['Contact', 'contact'],
+];
 
-  const {mode} = parentToChild;
+// Helper: Haptic feedback simulation (safely guarded)
+const triggerHaptic = (duration = 12) => {
+  try {
+    if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+      navigator.vibrate(duration);
+    }
+  } catch {
+    // Graceful no-op on iOS or unsupported devices
+  }
+};
+
+// ── Magnetic Button for Desktop Nav ────────────────────────────
+interface MagneticButtonProps {
+  label: string;
+  sectionId: string;
+  isActive: boolean;
+  reducedMotion: boolean;
+  onClick: () => void;
+}
+
+const MagneticButton: React.FC<MagneticButtonProps> = ({
+  label,
+  sectionId,
+  isActive,
+  reducedMotion,
+  onClick,
+}) => {
+  const btnRef = useRef<HTMLButtonElement>(null);
+  const rawX = useMotionValue(0);
+  const rawY = useMotionValue(0);
+
+  const springX = useSpring(rawX, { stiffness: 260, damping: 18, mass: 0.1 });
+  const springY = useSpring(rawY, { stiffness: 260, damping: 18, mass: 0.1 });
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (reducedMotion || !btnRef.current) return;
+    const rect = btnRef.current.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+
+    const maxShift = 4;
+    const deltaX = Math.max(-maxShift, Math.min(maxShift, (e.clientX - centerX) * 0.22));
+    const deltaY = Math.max(-maxShift, Math.min(maxShift, (e.clientY - centerY) * 0.22));
+
+    rawX.set(deltaX);
+    rawY.set(deltaY);
+  };
+
+  const handleMouseLeave = () => {
+    rawX.set(0);
+    rawY.set(0);
+  };
+
+  return (
+    <button
+      ref={btnRef}
+      className={`nav-link-btn cursor-hover ${isActive ? 'is-active' : ''}`}
+      onClick={onClick}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      type="button"
+      aria-current={isActive ? 'page' : undefined}
+    >
+      {isActive && (
+        <motion.div
+          layoutId="active-nav-indicator"
+          className="active-nav-indicator"
+          transition={
+            reducedMotion
+              ? { duration: 0 }
+              : { type: "spring", stiffness: 380, damping: 30 }
+          }
+        />
+      )}
+      <motion.span
+        className="nav-btn-text"
+        style={reducedMotion ? undefined : { x: springX, y: springY }}
+      >
+        {label}
+      </motion.span>
+    </button>
+  );
+};
+
+// ── Main Navigation Component ──────────────────────────────────
+function Navigation({ parentToChild, modeChange }: NavigationProps) {
+  const { mode } = parentToChild;
 
   const [mobileOpen, setMobileOpen] = useState<boolean>(false);
   const [scrolled, setScrolled] = useState<boolean>(false);
+  const [activeSection, setActiveSection] = useState<string>('');
+  const [reducedMotion, setReducedMotion] = useState<boolean>(false);
 
-  const handleDrawerToggle = () => {
-    setMobileOpen((prevState) => !prevState);
-  };
-
+  // Check prefers-reduced-motion
   useEffect(() => {
-    const handleScroll = () => {
-      const navbar = document.getElementById("navigation");
-      if (navbar) {
-        const scrolled = window.scrollY > navbar.clientHeight;
-        setScrolled(scrolled);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
+    if (typeof window === 'undefined') return;
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    setReducedMotion(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setReducedMotion(e.matches);
+    mq.addEventListener('change', handler);
+    return () => mq.removeEventListener('change', handler);
   }, []);
 
-  const scrollToSection = (section: string) => {
-    console.log(section)
-    const expertiseElement = document.getElementById(section);
-    if (expertiseElement) {
-      expertiseElement.scrollIntoView({ behavior: 'smooth' });
-      console.log('Scrolling to:', expertiseElement);  // Debugging: Ensure the element is found
-    } else {
-      console.error('Element with id "expertise" not found');  // Debugging: Log error if element is not found
+  // Detect scroll state for glass pill animation
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 40);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  // Active-section detection via single IntersectionObserver
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const sectionElements = navItems
+      .map(([, id]) => document.getElementById(id))
+      .filter((el): el is HTMLElement => el !== null);
+
+    if (sectionElements.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        // Find visible sections sorted by intersection ratio / position
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
+
+        if (visible.length > 0) {
+          setActiveSection(visible[0].target.id);
+        }
+      },
+      {
+        root: null,
+        rootMargin: '-20% 0px -55% 0px',
+        threshold: [0.1, 0.3, 0.6],
+      }
+    );
+
+    sectionElements.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+
+  // Smooth scroll handler with instant active update
+  const scrollToSection = useCallback((section: string) => {
+    setActiveSection(section);
+    triggerHaptic(14);
+
+    const element = document.getElementById(section);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, []);
+
+  const handleDrawerToggle = () => {
+    triggerHaptic(12);
+    setMobileOpen((prev) => !prev);
+  };
+
+  const handleDrawerClose = () => {
+    triggerHaptic(10);
+    setMobileOpen(false);
+  };
+
+  // Mobile drawer drag end handler
+  const handleDragEnd = (
+    _event: MouseEvent | TouchEvent | PointerEvent,
+    info: PanInfo
+  ) => {
+    // If swiped left by 60px or flicked left with velocity < -250
+    if (info.offset.x < -60 || info.velocity.x < -250) {
+      handleDrawerClose();
     }
   };
 
-  const drawer = (
-    <Box className="navigation-bar-responsive" onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-      <p className="mobile-menu-top"><ListIcon/>Menu</p>
-      <Divider />
-      <List>
-        {navItems.map((item) => (
-          <ListItem key={item[0]} disablePadding>
-            <ListItemButton sx={{ textAlign: 'center' }} onClick={() => scrollToSection(item[1])}>
-              <ListItemText primary={item[0]} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-    </Box>
-  );
+  // Mobile drawer item animation variants
+  const drawerListVariants: Variants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.06,
+        delayChildren: 0.1,
+      },
+    },
+  };
+
+  const drawerItemVariants: Variants = {
+    hidden: { opacity: 0, x: -24 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: { duration: 0.35, ease: [0.16, 1, 0.3, 1] },
+    },
+  };
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-      <AppBar component="nav" id="navigation" className={`navbar-fixed-top${scrolled ? ' scrolled' : ''}`}>
-        <Toolbar className='navigation-bar'>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
-          >
-            <MenuIcon />
-          </IconButton>
-          {mode === 'dark' ? (
-            <LightModeIcon onClick={() => modeChange()}/>
-          ) : (
-            <DarkModeIcon onClick={() => modeChange()}/>
-          )}
-          <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-            {navItems.map((item) => (
-              <Button key={item[0]} onClick={() => scrollToSection(item[1])} sx={{ color: '#fff' }}>
-                {item[0]}
-              </Button>
-            ))}
-          </Box>
-        </Toolbar>
-      </AppBar>
-      <nav>
-        <Drawer
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          PaperProps={{
-            className: `navigation-drawer${mode === 'dark' ? ' navigation-drawer--dark' : ''}`,
-          }}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
-          sx={{
-            display: { xs: 'block', sm: 'none' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-          }}
+    <>
+      <header className={`nav-wrapper ${scrolled ? 'nav-scrolled' : ''}`}>
+        <motion.nav
+          id="navigation"
+          className={`nav-glass-bar ${scrolled ? 'is-scrolled' : ''}`}
+          layout={!reducedMotion}
+          transition={
+            reducedMotion
+              ? { duration: 0 }
+              : { duration: 0.45, ease: [0.16, 1, 0.3, 1] }
+          }
+          aria-label="Main Navigation"
         >
-          {drawer}
-        </Drawer>
-      </nav>
-    </Box>
+          {/* Left Group: Mobile Hamburger, Brand Badge, Mode Toggle */}
+          <div className="nav-left-group">
+            <button
+              type="button"
+              className="mobile-menu-btn cursor-hover"
+              onClick={handleDrawerToggle}
+              aria-label="Open mobile menu"
+            >
+              <MenuIcon />
+            </button>
+
+            <span
+              className="nav-brand-logo cursor-hover"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+              }}
+              aria-label="Scroll to top"
+            >
+              HR
+            </span>
+
+            <div className="mode-toggle-wrapper">
+              <button
+                type="button"
+                className="mode-toggle-btn cursor-hover"
+                onClick={() => {
+                  triggerHaptic(12);
+                  modeChange();
+                }}
+                aria-label={`Switch to ${mode === 'dark' ? 'light' : 'dark'} mode`}
+              >
+                <AnimatePresence mode="wait" initial={false}>
+                  {mode === 'dark' ? (
+                    <motion.span
+                      key="dark-sun"
+                      initial={reducedMotion ? false : { opacity: 0, rotate: -90, scale: 0.6 }}
+                      animate={{ opacity: 1, rotate: 0, scale: 1 }}
+                      exit={reducedMotion ? undefined : { opacity: 0, rotate: 90, scale: 0.6 }}
+                      transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                      style={{ display: 'inline-flex' }}
+                    >
+                      <LightModeIcon />
+                    </motion.span>
+                  ) : (
+                    <motion.span
+                      key="light-moon"
+                      initial={reducedMotion ? false : { opacity: 0, rotate: 90, scale: 0.6 }}
+                      animate={{ opacity: 1, rotate: 0, scale: 1 }}
+                      exit={reducedMotion ? undefined : { opacity: 0, rotate: -90, scale: 0.6 }}
+                      transition={{ duration: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                      style={{ display: 'inline-flex' }}
+                    >
+                      <DarkModeIcon />
+                    </motion.span>
+                  )}
+                </AnimatePresence>
+              </button>
+            </div>
+          </div>
+
+          {/* Desktop Nav Links with Shared Layout Indicator & Magnetic Hover */}
+          <div className="nav-desktop-links" role="menubar">
+            {navItems.map(([label, id]) => (
+              <MagneticButton
+                key={id}
+                label={label}
+                sectionId={id}
+                isActive={activeSection === id}
+                reducedMotion={reducedMotion}
+                onClick={() => scrollToSection(id)}
+              />
+            ))}
+          </div>
+        </motion.nav>
+      </header>
+
+      {/* ── Custom Swipeable Mobile Drawer ───────────────────── */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              className="mobile-drawer-backdrop"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              onClick={handleDrawerClose}
+              aria-hidden="true"
+            />
+
+            {/* Swipeable Drawer Panel */}
+            <motion.aside
+              className="mobile-drawer-panel"
+              initial={{ x: '-100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '-100%' }}
+              transition={
+                reducedMotion
+                  ? { duration: 0.15 }
+                  : { type: "spring", damping: 28, stiffness: 280 }
+              }
+              drag="x"
+              dragConstraints={{ left: -320, right: 0 }}
+              dragElastic={0.08}
+              onDragEnd={handleDragEnd}
+              role="dialog"
+              aria-modal="true"
+              aria-label="Navigation Menu"
+            >
+              {/* Drag Handle on right edge for swipe affordance */}
+              <div className="drawer-drag-handle" aria-hidden="true" />
+
+              <div className="drawer-header">
+                <h3 className="drawer-title">Navigation</h3>
+                <button
+                  type="button"
+                  className="drawer-close-btn cursor-hover"
+                  onClick={handleDrawerClose}
+                  aria-label="Close menu"
+                >
+                  <CloseIcon fontSize="small" />
+                </button>
+              </div>
+
+              <motion.ul
+                className="mobile-nav-list"
+                variants={drawerListVariants}
+                initial="hidden"
+                animate="visible"
+              >
+                {navItems.map(([label, id]) => {
+                  const isActive = activeSection === id;
+                  return (
+                    <motion.li
+                      key={id}
+                      variants={drawerItemVariants}
+                      className={`mobile-nav-item cursor-hover ${isActive ? 'is-active' : ''}`}
+                      onClick={() => {
+                        scrollToSection(id);
+                        handleDrawerClose();
+                      }}
+                      role="menuitem"
+                    >
+                      <span className="item-label">{label}</span>
+                      {isActive && (
+                        <motion.span
+                          layoutId="mobile-active-dot"
+                          className="active-dot"
+                        />
+                      )}
+                    </motion.li>
+                  );
+                })}
+              </motion.ul>
+
+              <div className="drawer-footer">
+                <span className="drawer-hint">Swipe left to close</span>
+              </div>
+            </motion.aside>
+          </>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
 

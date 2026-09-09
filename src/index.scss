@@ -1,5 +1,10 @@
+// ─── Design Tokens (must be first) ───────────────────────────
+@use './styles/tokens';
+
 body {
   margin: 0;
+  background-color: #0e0e14;
+  color: #f0f0ff;
   font-family: "Lora", "Georgia", "Times New Roman", serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -9,14 +14,16 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace !important;
+  font-family: "Lora", "Georgia", "Times New Roman", serif !important;
   font-size: 1rem !important;
 }
 
 .main-container {
   position: relative;
-  background-color: #0d1116;
-
+  background-color: #0e0e14;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 a {
@@ -65,6 +72,20 @@ label, button {
   }
 }
 
+.navigation-links {
+  display: none;
+}
+
+.navigation-container {
+  display: flex;
+}
+
+@media (min-width: 600px) {
+  .navigation-links {
+    display: block;
+  }
+}
+
 .navigation-bar-responsive {
   span, p {
     color: #0d1116;
@@ -87,7 +108,6 @@ label, button {
 }
 
 .container {
-  margin-top: 64px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -129,9 +149,29 @@ label, button {
     background-color: #f8f9fa;
   }
 
-  p, a, h1, h2, h3, h4, h5, label, button {
+  p, a, span, h1, h2, h3, h4, h5, label, button {
     color: #0d1116;
   }
+
+  // ── Project cards: content always sits on a DARK gradient overlay,
+  // so all text must stay white regardless of page theme. ──────────
+  .proj-card__content h2,
+  .proj-card__content p,
+  .proj-card__content span,
+  .proj-card__title,
+  .proj-card__date,
+  .proj-card__hint,
+  .proj-card__tag {
+    color: revert; // let component-level rules win
+  }
+  .proj-card__title  { color: #ffffff !important; }
+  .proj-card__date   { color: #7de8f8 !important; } // accent-secondary-light
+  .proj-card__hint   { color: rgba(255,255,255,0.55) !important; }
+  .proj-card__tag    { color: var(--accent-primary-light) !important; }
+
+  // Featured badge always white-on-gradient
+  .achievement-card__featured-badge,
+  .achievement-card__featured-badge span { color: #ffffff !important; }
 
   a:hover {
     color: #5000ca;

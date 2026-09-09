@@ -1,46 +1,271 @@
-.vertical-timeline span {
-    color: white;
-    font-family: "Lora", "Georgia", "Times New Roman", serif;
+// ─── Timeline.scss — Career History Section Styles ───────────
+@use '../../styles/tokens' as *;
+
+#history {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
 }
 
-.vertical-timeline,
-.vertical-timeline h3,
-.vertical-timeline h4,
-.vertical-timeline p,
-.vertical-timeline .vertical-timeline-element-date {
-    font-family: "Lora", "Georgia", "Times New Roman", serif;
+// ── Timeline Section Heading ─────────────────────────────────
+#history .items-container {
+  position: relative;
+  z-index: 2;
+
+  h1 {
+    font-family: var(--font-heading, 'Space Grotesk', system-ui, sans-serif);
+    font-size: clamp(2.4rem, 5vw, 3.8rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    margin: 0 0 36px 0;
+    line-height: 1.15;
+  }
 }
 
-.vertical-timeline p {
-    color: rgb(39, 40, 34);
+// ── Relative Wrapper for Connecting Line Alignment ──────────
+.timeline-outer-wrapper {
+  position: relative;
+  width: 100%;
 }
 
-.vertical-timeline-element p {
-    color: rgb(39, 40, 34);
+// ── Animated Central Drawing Progress Line ───────────────────
+.timeline-progress-line {
+  position: absolute;
+  top: 24px;
+  bottom: 24px;
+  width: 4px;
+  height: 0%;
+  border-radius: 9999px;
+  background: linear-gradient(
+    180deg,
+    var(--accent-primary, #7c3aed) 0%,
+    var(--accent-secondary, #06b6d4) 100%
+  );
+  box-shadow: 0 0 14px rgba(124, 58, 237, 0.7),
+              0 0 24px rgba(6, 182, 212, 0.4);
+  z-index: 1;
+  pointer-events: none;
+  left: 18px;
+  transform: none;
+
+  @media only screen and (min-width: 1170px) {
+    left: 50%;
+    transform: translateX(-50%);
+  }
 }
 
-.vertical-timeline-element h3 {
-    color: rgb(39, 40, 34);
+// ── Background Track Line (Underlying) ────────────────────────
+.vertical-timeline::before {
+  width: 4px !important;
+  border-radius: 4px;
 }
 
-.vertical-timeline-element h4 {
-    color: rgb(39, 40, 34);
+// ── Icon Circle Pulse & Hover ────────────────────────────────
+.vertical-timeline-element-icon {
+  cursor: pointer;
+  z-index: 2 !important;
+  transition: transform 0.25s var(--ease-bounce, cubic-bezier(0.34, 1.56, 0.64, 1)),
+              box-shadow 0.25s ease !important;
+
+  &.is-active-pulse {
+    animation: iconGlowPulse 1.2s ease-out 2;
+  }
+
+  &:hover {
+    transform: scale(1.14) !important;
+    box-shadow: 0 0 20px var(--accent-secondary, #06b6d4) !important;
+  }
+
+  svg {
+    color: #ffffff !important;
+  }
 }
 
-.vertical-timeline-element span {
-    color: rgb(39, 40, 34);
+@keyframes iconGlowPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 14px rgba(124, 58, 237, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(124, 58, 237, 0);
+  }
 }
 
-.vertical-timeline-element .vertical-timeline-element-date {
-    color: white;
+// ── Content Card Base & Hover Polish ─────────────────────────
+.vertical-timeline-element-content {
+  border-radius: 16px !important;
+  padding: 24px 26px !important;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.3s ease !important;
+
+  &:hover {
+    transform: translateY(-4px) !important;
+  }
+
+  .vertical-timeline-element-title {
+    font-family: var(--font-heading, 'Space Grotesk', system-ui, sans-serif) !important;
+    font-size: 1.25rem !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.015em !important;
+    line-height: 1.3 !important;
+    margin: 0 0 6px 0 !important;
+  }
+
+  .vertical-timeline-element-subtitle {
+    font-family: var(--font-body, 'Inter', system-ui, sans-serif) !important;
+    font-size: 0.95rem !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.01em !important;
+    margin: 0 0 12px 0 !important;
+  }
+
+  p {
+    font-family: var(--font-body, 'Inter', system-ui, sans-serif) !important;
+    font-size: 0.94rem !important;
+    line-height: 1.65 !important;
+    margin: 0 !important;
+  }
+
+  .vertical-timeline-element-date {
+    font-family: var(--font-heading, 'Space Grotesk', system-ui, sans-serif) !important;
+    font-size: 0.88rem !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.02em !important;
+    opacity: 0.85 !important;
+  }
 }
 
-.svg-inline--fa {
-    color: white;
-}
+// ── Dark Mode Styling ────────────────────────────────────────
+.dark-mode {
+  #history .items-container h1 {
+    color: var(--text-primary, #f0f0ff);
+  }
 
-@media screen and (max-width: 1170px) {
-    .vertical-timeline-element .vertical-timeline-element-date {
-        color: rgb(39, 40, 34);
+  .vertical-timeline::before {
+    background: rgba(255, 255, 255, 0.08) !important;
+  }
+
+  .vertical-timeline-element-icon {
+    box-shadow: 0 0 0 4px #0e0e14, 0 4px 12px rgba(0, 0, 0, 0.5) !important;
+  }
+
+  .vertical-timeline-element-content {
+    background: rgba(20, 20, 30, 0.75) !important;
+    border: 1px solid rgba(255, 255, 255, 0.09) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4) !important;
+
+    &:hover {
+      border-color: rgba(124, 58, 237, 0.4) !important;
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.55),
+                  0 0 20px rgba(124, 58, 237, 0.22) !important;
     }
+
+    .vertical-timeline-element-title {
+      color: #f0f0ff !important;
+    }
+
+    .vertical-timeline-element-subtitle {
+      color: var(--accent-secondary, #06b6d4) !important;
+    }
+
+    p {
+      color: var(--text-secondary, #a0a0c0) !important;
+    }
+
+    .vertical-timeline-element-date {
+      color: var(--text-secondary, #a0a0c0) !important;
+    }
+  }
+
+  // Content Arrow adaptation
+  .vertical-timeline-element-content-arrow {
+    border-right-color: rgba(20, 20, 30, 0.75) !important;
+  }
+
+  @media only screen and (min-width: 1170px) {
+    .vertical-timeline--two-columns .vertical-timeline-element.vertical-timeline-element--right .vertical-timeline-element-content-arrow,
+    .vertical-timeline--two-columns .vertical-timeline-element:nth-child(even):not(.vertical-timeline-element--left) .vertical-timeline-element-content-arrow {
+      border-right-color: rgba(20, 20, 30, 0.75) !important;
+    }
+
+    .vertical-timeline--two-columns .vertical-timeline-element-content-arrow {
+      border-right-color: transparent !important;
+      border-left-color: rgba(20, 20, 30, 0.75) !important;
+    }
+  }
+}
+
+// ── Light Mode Styling ───────────────────────────────────────
+.light-mode {
+  #history .items-container h1 {
+    color: var(--text-primary, #0e0e1a);
+  }
+
+  .vertical-timeline::before {
+    background: rgba(0, 0, 0, 0.08) !important;
+  }
+
+  .vertical-timeline-element-icon {
+    box-shadow: 0 0 0 4px #f4f4fb, 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+  }
+
+  .vertical-timeline-element-content {
+    background: rgba(255, 255, 255, 0.85) !important;
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    backdrop-filter: blur(14px) !important;
+    -webkit-backdrop-filter: blur(14px) !important;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06) !important;
+
+    &:hover {
+      border-color: rgba(109, 40, 217, 0.35) !important;
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.1),
+                  0 0 20px rgba(109, 40, 217, 0.14) !important;
+    }
+
+    .vertical-timeline-element-title {
+      color: #0e0e1a !important;
+    }
+
+    .vertical-timeline-element-subtitle {
+      color: var(--accent-primary, #6d28d9) !important;
+    }
+
+    p {
+      color: #4a4a6a !important;
+    }
+
+    .vertical-timeline-element-date {
+      color: #6a6a8a !important;
+    }
+  }
+
+  .vertical-timeline-element-content-arrow {
+    border-right-color: rgba(255, 255, 255, 0.85) !important;
+  }
+
+  @media only screen and (min-width: 1170px) {
+    .vertical-timeline--two-columns .vertical-timeline-element.vertical-timeline-element--right .vertical-timeline-element-content-arrow,
+    .vertical-timeline--two-columns .vertical-timeline-element:nth-child(even):not(.vertical-timeline-element--left) .vertical-timeline-element-content-arrow {
+      border-right-color: rgba(255, 255, 255, 0.85) !important;
+    }
+
+    .vertical-timeline--two-columns .vertical-timeline-element-content-arrow {
+      border-right-color: transparent !important;
+      border-left-color: rgba(255, 255, 255, 0.85) !important;
+    }
+  }
+}
+
+// ── Mobile Responsive Overrides ──────────────────────────────
+@media screen and (max-width: 1169px) {
+  .vertical-timeline-element-content .vertical-timeline-element-date {
+    display: block !important;
+    float: none !important;
+    padding: 0 0 8px 0 !important;
+  }
 }
