@@ -1,7 +1,9 @@
 {
   "files": {
-    "main.css": "/hrithik-raj-portfolio/static/css/main.471377d6.css",
-    "main.js": "/hrithik-raj-portfolio/static/js/main.453ba8dc.js",
+    "main.css": "/hrithik-raj-portfolio/static/css/main.4e02ea0a.css",
+    "main.js": "/hrithik-raj-portfolio/static/js/main.e23f9f7b.js",
+    "static/css/505.50d1e7b3.chunk.css": "/hrithik-raj-portfolio/static/css/505.50d1e7b3.chunk.css",
+    "static/js/505.9920d066.chunk.js": "/hrithik-raj-portfolio/static/js/505.9920d066.chunk.js",
     "static/js/553.d062b536.chunk.js": "/hrithik-raj-portfolio/static/js/553.d062b536.chunk.js",
     "static/js/620.fffd068d.chunk.js": "/hrithik-raj-portfolio/static/js/620.fffd068d.chunk.js",
     "static/media/angrybird.jpg": "/hrithik-raj-portfolio/static/media/angrybird.d2bf3a6b33339406a2ea.jpg",
@@ -14,13 +16,15 @@
     "static/media/network-analysis.jpg": "/hrithik-raj-portfolio/static/media/network-analysis.0706b60555e9232ce989.jpg",
     "static/media/nature-disaster-system.jpg": "/hrithik-raj-portfolio/static/media/nature-disaster-system.4b6c7dc9fd1227baee31.jpg",
     "index.html": "/hrithik-raj-portfolio/index.html",
-    "main.471377d6.css.map": "/hrithik-raj-portfolio/static/css/main.471377d6.css.map",
-    "main.453ba8dc.js.map": "/hrithik-raj-portfolio/static/js/main.453ba8dc.js.map",
+    "main.4e02ea0a.css.map": "/hrithik-raj-portfolio/static/css/main.4e02ea0a.css.map",
+    "main.e23f9f7b.js.map": "/hrithik-raj-portfolio/static/js/main.e23f9f7b.js.map",
+    "505.50d1e7b3.chunk.css.map": "/hrithik-raj-portfolio/static/css/505.50d1e7b3.chunk.css.map",
+    "505.9920d066.chunk.js.map": "/hrithik-raj-portfolio/static/js/505.9920d066.chunk.js.map",
     "553.d062b536.chunk.js.map": "/hrithik-raj-portfolio/static/js/553.d062b536.chunk.js.map",
     "620.fffd068d.chunk.js.map": "/hrithik-raj-portfolio/static/js/620.fffd068d.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.471377d6.css",
-    "static/js/main.453ba8dc.js"
+    "static/css/main.4e02ea0a.css",
+    "static/js/main.e23f9f7b.js"
   ]
 }
