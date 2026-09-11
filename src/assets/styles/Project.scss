@@ -173,6 +173,25 @@
   transition: background 0.4s ease, border-color 0.4s ease;
 }
 
+@media (max-width: 640px) {
+  .proj-card__text-panel {
+    width: calc(100% - 2rem);
+    max-width: none;
+    box-sizing: border-box;
+    bottom: 0.75rem;
+    padding: 0.75rem 0.85rem;
+  }
+
+  .proj-card__content {
+    min-width: 0;
+  }
+
+  .proj-card__title {
+    font-size: clamp(1rem, 4.5vw, 1.25rem);
+    overflow-wrap: anywhere;
+  }
+}
+
 .proj-card-wrap:hover .proj-card__text-panel {
   background: rgba(5, 5, 12, 0.44);
   border-color: rgba(255, 255, 255, 0.12);
