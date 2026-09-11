@@ -124,14 +124,14 @@
 // ─── LIGHT MODE (class="light-mode") ─────────────────────────
 .light-mode {
   // Backgrounds
-  --bg-base:        #f4f4fb;
-  --bg-elevated:    #ffffff;
-  --bg-surface:     #ededf8;
-  --bg-overlay:     rgba(244, 244, 251, 0.9);
+  --bg-base:        #faf6ee;
+  --bg-elevated:    #fffdf8;
+  --bg-surface:     #f2ecdd;
+  --bg-overlay:     rgba(250, 246, 238, 0.9);
 
   // Glass / blur surface
-  --glass-bg:       rgba(255, 255, 255, 0.6);
-  --glass-border:   rgba(0, 0, 0, 0.08);
+  --glass-bg:       rgba(255, 253, 248, 0.65);
+  --glass-border:   rgba(120, 100, 60, 0.12);
   --glass-blur:     16px;
 
   // Accent — Violet primary (same hue, adjusted for light)
@@ -148,25 +148,25 @@
 
   // Gradient
   --gradient-brand: linear-gradient(135deg, #6d28d9 0%, #0891b2 100%);
-  --gradient-bg:    linear-gradient(180deg, #f4f4fb 0%, #ededf8 100%);
+  --gradient-bg:    linear-gradient(180deg, #faf6ee 0%, #f2ecdd 100%);
   --gradient-glow:  radial-gradient(ellipse at 50% 0%, rgba(109, 40, 217, 0.1) 0%, transparent 70%);
 
   // Text
   --text-primary:   #0e0e1a;
-  --text-secondary: #4a4a6a;
-  --text-muted:     #8888a8;
+  --text-secondary: #5c5240;
+  --text-muted:     #6f654f;
   --text-inverse:   #f0f0ff;
 
   // Borders
-  --border-subtle:  rgba(0, 0, 0, 0.05);
-  --border-default: rgba(0, 0, 0, 0.1);
-  --border-strong:  rgba(0, 0, 0, 0.2);
+  --border-subtle:  rgba(90, 70, 40, 0.08);
+  --border-default: rgba(90, 70, 40, 0.14);
+  --border-strong:  rgba(90, 70, 40, 0.26);
 
   // Shadows
-  --shadow-sm:    0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
-  --shadow-md:    0 4px 16px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(0, 0, 0, 0.08);
-  --shadow-lg:    0 16px 40px rgba(0, 0, 0, 0.12), 0 4px 12px rgba(0, 0, 0, 0.1);
-  --shadow-xl:    0 32px 64px rgba(0, 0, 0, 0.15);
+  --shadow-sm:    0 1px 3px rgba(60, 45, 20, 0.10), 0 1px 2px rgba(60, 45, 20, 0.07);
+  --shadow-md:    0 4px 16px rgba(60, 45, 20, 0.12), 0 2px 6px rgba(60, 45, 20, 0.09);
+  --shadow-lg:    0 16px 40px rgba(60, 45, 20, 0.14), 0 4px 12px rgba(60, 45, 20, 0.11);
+  --shadow-xl:    0 32px 64px rgba(60, 45, 20, 0.18);
 
   // Glow shadows
   --shadow-glow-primary:   0 0 20px rgba(109, 40, 217, 0.35), 0 0 60px rgba(109, 40, 217, 0.1);

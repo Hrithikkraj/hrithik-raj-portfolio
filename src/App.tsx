@@ -2,6 +2,7 @@ import React, { lazy, Suspense, useState, useEffect, useRef } from "react";
 import Lenis from "lenis";
 import { AnimatePresence, motion } from 'framer-motion';
 import Main from './components/Main';
+import About from './components/About';
 import Timeline from './components/Timeline';
 import Expertise from './components/Expertise';
 import Achievements from './components/Achievements';
@@ -14,8 +15,9 @@ import PageLoader from './components/PageLoader';
 import './index.scss';
 
 const Project = lazy(() => import('./components/Project'));
+const GitHubActivity = lazy(() => import('./components/Activity'));
 
-const sectionIds = ['expertise', 'history', 'projects', 'achievements', 'contact'];
+const sectionIds = ['about', 'expertise', 'history', 'projects', 'achievements', 'github-activity', 'contact'];
 
 const triggerHaptic = (duration: number) => {
     if ('vibrate' in navigator) navigator.vibrate(duration);
@@ -160,12 +162,16 @@ function App() {
                 <Navigation parentToChild={{mode}} modeChange={handleModeChange}/>
                 <FadeIn transitionDuration={700}>
                     <Main/>
+                    <About/>
                     <Expertise/>
                     <Timeline/>
                     <Suspense fallback={<div className="section-loading-placeholder" aria-label="Loading projects" />}>
                         <Project/>
                     </Suspense>
                     <Achievements/>
+                    <Suspense fallback={<div className="section-loading-placeholder" aria-label="Loading GitHub activity" />}>
+                        <GitHubActivity/>
+                    </Suspense>
                     <Contact/>
                 </FadeIn>
                 <Footer />

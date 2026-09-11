@@ -21,10 +21,12 @@ export interface NavigationProps {
 }
 
 const navItems: [string, string][] = [
+  ['About', 'about'],
   ['Expertise', 'expertise'],
   ['History', 'history'],
   ['Projects', 'projects'],
   ['Achievements', 'achievements'],
+  ['Activity', 'github-activity'],
   ['Contact', 'contact'],
 ];
 

@@ -473,10 +473,6 @@ function Contact() {
               <span>Currently available for select projects</span>
             </div>
 
-            <a className="contact-aside__email" href={`mailto:${recipientEmail}`}>
-              {recipientEmail}
-            </a>
-
             <div className="contact-aside__meta">
               <span>Based in India</span>
               <span>Usually replies within 24 hours</span>

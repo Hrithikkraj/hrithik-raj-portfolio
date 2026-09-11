@@ -6,6 +6,7 @@ import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import DownloadIcon from '@mui/icons-material/Download';
 import '../assets/styles/Main.scss';
 import profilePic from '../assets/images/profile.jpeg';
 
@@ -69,10 +70,87 @@ const socialContainerVariants: Variants = {
   },
 };
 
+const resumeButtonVariants: Variants = {
+  hidden: { opacity: 0, y: 12 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      delay: 1.25,
+      ease: [0.16, 1, 0.3, 1],
+    },
+  },
+};
+
+const reducedResumeButtonVariants: Variants = {
+  hidden: { opacity: 1, y: 0 },
+  visible: { opacity: 1, y: 0 },
+};
+
+const resumeHref = `${process.env.PUBLIC_URL}/resume.pdf`;
+
+const roles = [
+  "Software Engineer",
+  "Problem Solver",
+  "Full-Stack Developer",
+  "AI Enthusiast",
+  "Perpetual Learner",
+];
+
+const roleExitVariants: Variants = {
+  exit: {
+    opacity: 0,
+    y: -8,
+    filter: 'blur(5px)',
+    transition: { duration: 0.28, ease: 'easeIn' },
+  },
+};
+
 function Main({ mode }: MainProps) {
   const [currentMode, setCurrentMode] = useState<'dark' | 'light'>('dark');
   const [showScrollIndicator, setShowScrollIndicator] = useState(true);
+  const [roleIndex, setRoleIndex] = useState(0);
   const reducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  useEffect(() => {
+    if (reducedMotion) return;
+
+    let timeoutId: number | null = null;
+    let intervalId: number | null = null;
+
+    const clearCycle = () => {
+      if (timeoutId !== null) window.clearTimeout(timeoutId);
+      if (intervalId !== null) window.clearInterval(intervalId);
+      timeoutId = null;
+      intervalId = null;
+    };
+
+    const startCycle = () => {
+      clearCycle();
+      if (document.hidden) return;
+
+      timeoutId = window.setTimeout(() => {
+        setRoleIndex(index => (index + 1) % roles.length);
+        intervalId = window.setInterval(() => {
+          setRoleIndex(index => (index + 1) % roles.length);
+        }, 3000);
+      }, 3000);
+    };
+
+    const handleVisibilityChange = () => {
+      clearCycle();
+      if (!document.hidden) startCycle();
+    };
+
+    startCycle();
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+
+    return () => {
+      clearCycle();
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [reducedMotion]);
 
   // Detect active mode (via prop or DOM observer)
   useEffect(() => {
@@ -105,7 +183,7 @@ function Main({ mode }: MainProps) {
   }, []);
 
   const handleScrollClick = () => {
-    const nextSection = document.getElementById('expertise') || document.querySelector('.skills-container');
+    const nextSection = document.getElementById('about') || document.getElementById('expertise') || document.querySelector('.skills-container');
     if (nextSection) {
       nextSection.scrollIntoView({ behavior: 'smooth' });
     } else {
@@ -257,10 +335,24 @@ function Main({ mode }: MainProps) {
             variants={titleContainerVariants}
             initial="hidden"
             animate="visible"
+            aria-live="off"
           >
-            {renderAnimatedWord("Software")}
-            <span style={{ display: 'inline-block', width: '0.3em' }} />
-            {renderAnimatedWord("Engineer")}
+            <span className="hero-title__rotator" aria-hidden="true">
+              <span className="hero-title__sizer">Full-Stack Developer</span>
+              <AnimatePresence mode="wait">
+                <motion.span
+                  key={roles[roleIndex]}
+                  className="hero-title__role"
+                  variants={roleExitVariants}
+                  exit="exit"
+                >
+                  {renderAnimatedWord(roles[roleIndex])}
+                </motion.span>
+              </AnimatePresence>
+            </span>
+            <span className="sr-only">
+              Software Engineer, Problem Solver, Full-Stack Developer, AI Enthusiast, Perpetual Learner
+            </span>
           </motion.p>
 
           <motion.div
@@ -271,6 +363,23 @@ function Main({ mode }: MainProps) {
           >
             {socialLinks}
           </motion.div>
+
+          <motion.a
+            className="hero-resume-btn cursor-hover"
+            href={resumeHref}
+            download="Hrithik_Raj_Resume.pdf"
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Download Resume"
+            variants={reducedMotion ? reducedResumeButtonVariants : resumeButtonVariants}
+            initial="hidden"
+            animate="visible"
+            whileHover={reducedMotion ? undefined : { scale: 1.04, transition: { duration: 0.2, ease: 'easeOut' } }}
+            whileTap={reducedMotion ? undefined : { scale: 0.97 }}
+          >
+            <DownloadIcon fontSize="small" />
+            <span>Download Resume</span>
+          </motion.a>
         </div>
 
         {/* ── Animated Scroll-Down Indicator ────────────────── */}
