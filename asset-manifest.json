@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/hrithik-raj-portfolio/static/css/main.8c97a26a.css",
-    "main.js": "/hrithik-raj-portfolio/static/js/main.b938f18e.js",
-    "static/css/568.d20b37b6.chunk.css": "/hrithik-raj-portfolio/static/css/568.d20b37b6.chunk.css",
+    "main.js": "/hrithik-raj-portfolio/static/js/main.6bc176d3.js",
+    "static/css/568.ef1b28fc.chunk.css": "/hrithik-raj-portfolio/static/css/568.ef1b28fc.chunk.css",
     "static/js/568.b4f6911e.chunk.js": "/hrithik-raj-portfolio/static/js/568.b4f6911e.chunk.js",
     "static/css/132.3c1a79b1.chunk.css": "/hrithik-raj-portfolio/static/css/132.3c1a79b1.chunk.css",
     "static/js/132.b58ba83a.chunk.js": "/hrithik-raj-portfolio/static/js/132.b58ba83a.chunk.js",
@@ -21,6 +21,6 @@
   },
   "entrypoints": [
     "static/css/main.8c97a26a.css",
-    "static/js/main.b938f18e.js"
+    "static/js/main.6bc176d3.js"
   ]
 }
