@@ -213,11 +213,11 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, onClick }) =>
             </motion.h2>
             <p className="proj-card__date">{project.date}</p>
 
-            {/* Tech tags — visible on hover */}
+            {/* Tech tags — always visible after the card entrance */}
             <motion.div
               className="proj-card__tags"
               initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: hovered ? 1 : 0, y: hovered ? 0 : 8 }}
+              animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, ease: 'easeOut' }}
               aria-label="Tech stack"
             >
@@ -226,11 +226,11 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, onClick }) =>
               ))}
             </motion.div>
 
-            {/* Expand hint */}
+            {/* Expand hint — always visible after the card entrance */}
             <motion.div
               className="proj-card__hint"
               initial={{ opacity: 0 }}
-              animate={{ opacity: hovered ? 1 : 0 }}
+              animate={{ opacity: 1 }}
               transition={{ duration: 0.25 }}
               aria-hidden="true"
             >
