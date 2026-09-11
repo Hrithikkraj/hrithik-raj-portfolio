@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import emailjs from '@emailjs/browser';
 import {
   motion,
   AnimatePresence,
@@ -127,7 +128,9 @@ function Contact() {
   const [messageError, setMessageError] = useState(false);
 
   const [submitted,    setSubmitted]    = useState(false);
-  const [sendState,    setSendState]    = useState<'idle' | 'sent'>('idle');
+  const [sendFailed,   setSendFailed]   = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [sendState,    setSendState]    = useState<'idle' | 'sending' | 'sent'>('idle');
 
   // ── Focus tracking ──────────────────────────────────────────────────────────
   const [nameFocused,    setNameFocused]    = useState(false);
@@ -146,8 +149,14 @@ function Contact() {
     return () => clearTimeout(t);
   }, [submitted]);
 
+  useEffect(() => {
+    if (!sendFailed) return;
+    const t = setTimeout(() => setSendFailed(false), 6500);
+    return () => clearTimeout(t);
+  }, [sendFailed]);
+
   // ── Submit ──────────────────────────────────────────────────────────────────
-  const sendEmail = (e: React.FormEvent<HTMLFormElement>) => {
+  const sendEmail = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const trimmedName    = name.trim();
     const trimmedEmail   = email.trim();
@@ -157,21 +166,50 @@ function Contact() {
     setEmailError(!trimmedEmail);
     setMessageError(!trimmedMessage);
     setSubmitted(false);
+    setSendFailed(false);
+    setErrorMessage(null);
 
     if (!trimmedName || !trimmedEmail || !trimmedMessage) return;
 
-    const subject = 'Message for Hrithik';
-    const body    = `Name: ${trimmedName}\nContact: ${trimmedEmail}\n\nMessage:\n${trimmedMessage}`;
-    window.location.href = `mailto:${recipientEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    const serviceId  = process.env.REACT_APP_EMAILJS_SERVICE_ID  || 'service_4vd4rs8';
+    const templateId = process.env.REACT_APP_EMAILJS_TEMPLATE_ID || 'template_0tzlv2g';
+    const publicKey  = process.env.REACT_APP_EMAILJS_PUBLIC_KEY  || 'bj3kHY36dA3h8SCqD';
 
-    // Button "sent" state
-    setSendState('sent');
-    setTimeout(() => setSendState('idle'), 1600);
+    setSendState('sending');
 
-    setSubmitted(true);
-    setName('');
-    setEmail('');
-    setMessage('');
+    try {
+      await emailjs.send(
+        serviceId,
+        templateId,
+        {
+          from_name: trimmedName,
+          name: trimmedName,
+          from_email: trimmedEmail,
+          email: trimmedEmail,
+          reply_to: trimmedEmail,
+          title: `Portfolio inquiry from ${trimmedName}`,
+          message: trimmedMessage,
+        },
+        publicKey
+      );
+
+      // Button "sent" state
+      setSendState('sent');
+      setTimeout(() => setSendState('idle'), 1600);
+
+      setSubmitted(true);
+      setName('');
+      setEmail('');
+      setMessage('');
+    } catch (error: any) {
+      console.error('EmailJS send error:', error);
+      const msg = typeof error === 'string'
+        ? error
+        : error?.text || error?.message || null;
+      setErrorMessage(msg);
+      setSendState('idle');
+      setSendFailed(true);
+    }
   };
 
   return (
@@ -298,6 +336,7 @@ function Contact() {
                 type="submit"
                 className="contact-btn cursor-hover"
                 aria-label="Send message"
+                disabled={sendState === 'sending'}
                 endIcon={
                   <AnimatePresence mode="wait" initial={false}>
                     {sendState === 'sent' ? (
@@ -307,9 +346,31 @@ function Contact() {
                         animate={{ opacity: 1, scale: 1, rotate: 0 }}
                         exit={{ opacity: 0, scale: 0.5 }}
                         transition={{ duration: 0.25 }}
-                        style={{ display: 'inline-flex' }}
+                        style={{ display: 'inline-flex', color: '#ffffff' }}
                       >
-                        <CheckIcon fontSize="small" />
+                        <CheckIcon fontSize="small" sx={{ color: '#ffffff' }} />
+                      </motion.span>
+                    ) : sendState === 'sending' ? (
+                      <motion.span
+                        key="sending"
+                        initial={{ opacity: 0, scale: 0.6 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.6 }}
+                        transition={{ duration: 0.2 }}
+                        style={{ display: 'inline-flex', color: '#ffffff' }}
+                      >
+                        <motion.span
+                          animate={reduced ? {} : { rotate: 360 }}
+                          transition={{ repeat: Infinity, duration: 0.8, ease: 'linear' }}
+                          style={{
+                            display: 'inline-block',
+                            width: '16px',
+                            height: '16px',
+                            border: '2px solid rgba(255, 255, 255, 0.35)',
+                            borderTopColor: '#ffffff',
+                            borderRadius: '50%',
+                          }}
+                        />
                       </motion.span>
                     ) : (
                       <motion.span
@@ -318,20 +379,20 @@ function Contact() {
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: 4 }}
                         transition={{ duration: 0.2 }}
-                        style={{ display: 'inline-flex' }}
+                        style={{ display: 'inline-flex', color: '#ffffff' }}
                       >
-                        <SendIcon fontSize="small" className="send-icon" />
+                        <SendIcon fontSize="small" className="send-icon" sx={{ color: '#ffffff' }} />
                       </motion.span>
                     )}
                   </AnimatePresence>
                 }
               >
-                {sendState === 'sent' ? 'Sent!' : 'Send'}
+                {sendState === 'sent' ? 'Sent!' : sendState === 'sending' ? 'Sending...' : 'Send'}
               </Button>
             </motion.div>
           </motion.div>
 
-          {/* ── Success toast ─────────────────────────────────────────── */}
+          {/* ── Toast region (success & error) ────────────────────── */}
           {/* aria-live region always in DOM so screen readers pick it up */}
           <div
             role="status"
@@ -342,6 +403,7 @@ function Contact() {
             <AnimatePresence>
               {submitted && (
                 <motion.div
+                  key="success-toast"
                   className="contact-toast"
                   variants={reduced ? {} : toastVariants}
                   initial={reduced ? { opacity: 1 } : 'hidden'}
@@ -351,11 +413,44 @@ function Contact() {
                 >
                   <span className="contact-toast__icon" aria-hidden="true">✉️</span>
                   <span className="contact-toast__text">
-                    Your email app should now be open with the message ready to send.
+                    Your message has been sent successfully!
                   </span>
                   <button
                     className="contact-toast__dismiss"
                     onClick={() => setSubmitted(false)}
+                    aria-label="Dismiss notification"
+                  >
+                    ×
+                  </button>
+                </motion.div>
+              )}
+
+              {sendFailed && (
+                <motion.div
+                  key="error-toast"
+                  className="contact-toast contact-toast--error"
+                  variants={reduced ? {} : toastVariants}
+                  initial={reduced ? { opacity: 1 } : 'hidden'}
+                  animate={reduced ? { opacity: 1 } : 'visible'}
+                  exit={reduced ? { opacity: 0 } : 'exit'}
+                  role="alert"
+                >
+                  <span className="contact-toast__icon" aria-hidden="true">⚠</span>
+                  <span className="contact-toast__text">
+                    {errorMessage
+                      ? `${errorMessage} — please `
+                      : 'Something went wrong sending your message — please '}
+                    <a
+                      href={`mailto:${recipientEmail}`}
+                      className="contact-toast__link"
+                    >
+                      email me directly
+                    </a>{' '}
+                    at {recipientEmail}.
+                  </span>
+                  <button
+                    className="contact-toast__dismiss"
+                    onClick={() => setSendFailed(false)}
                     aria-label="Dismiss notification"
                   >
                     ×

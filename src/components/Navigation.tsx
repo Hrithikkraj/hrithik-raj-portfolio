@@ -142,40 +142,100 @@ function Navigation({ parentToChild, modeChange }: NavigationProps) {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Active-section detection via single IntersectionObserver
+  const manualSelectionUntilRef = useRef<number>(0);
+
+  // Cancel manual lock if user starts scrolling manually with wheel or touch
+  useEffect(() => {
+    const cancelManual = () => {
+      manualSelectionUntilRef.current = 0;
+    };
+    window.addEventListener('wheel', cancelManual, { passive: true });
+    window.addEventListener('touchmove', cancelManual, { passive: true });
+    return () => {
+      window.removeEventListener('wheel', cancelManual);
+      window.removeEventListener('touchmove', cancelManual);
+    };
+  }, []);
+
+  // Position-based scrollspy calculation with requestAnimationFrame throttling
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    const sectionElements = navItems
-      .map(([, id]) => document.getElementById(id))
-      .filter((el): el is HTMLElement => el !== null);
+    const ACTIVATION_OFFSET = 140; // px below viewport top (clearance for floating navbar + margins)
+    const BOTTOM_BUFFER = 40;     // px threshold to force-activate contact at page bottom
 
-    if (sectionElements.length === 0) return;
+    let rafId: number | null = null;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        // Find visible sections sorted by intersection ratio / position
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-
-        if (visible.length > 0) {
-          setActiveSection(visible[0].target.id);
-        }
-      },
-      {
-        root: null,
-        rootMargin: '-20% 0px -55% 0px',
-        threshold: [0.1, 0.3, 0.6],
+    const updateActiveSection = () => {
+      // If user recently clicked a nav button, honor the instant feedback override
+      if (Date.now() < manualSelectionUntilRef.current) {
+        return;
       }
-    );
 
-    sectionElements.forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
+      const scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+      const clientHeight = window.innerHeight;
+      const currentScroll = window.scrollY || window.pageYOffset || document.documentElement.scrollTop;
+
+      // 1. Special-case: very bottom of page -> force-activate last section ('contact')
+      if (currentScroll + clientHeight >= scrollHeight - BOTTOM_BUFFER) {
+        setActiveSection('contact');
+        return;
+      }
+
+      // 2. Special-case: very top of page (Hero/About section)
+      const firstSectionEl = document.getElementById(navItems[0][1]);
+      if (currentScroll < 60 || (firstSectionEl && firstSectionEl.getBoundingClientRect().top > ACTIVATION_OFFSET)) {
+        setActiveSection('');
+        return;
+      }
+
+      // 3. Find section whose top has crossed the activation line with the largest top value
+      let currentActive = '';
+      let maxTop = -Infinity;
+
+      for (const [, id] of navItems) {
+        const el = document.getElementById(id);
+        if (!el) continue;
+
+        const top = el.getBoundingClientRect().top;
+        if (top <= ACTIVATION_OFFSET && top > maxTop) {
+          maxTop = top;
+          currentActive = id;
+        }
+      }
+
+      if (currentActive) {
+        setActiveSection(currentActive);
+      }
+    };
+
+    const onScrollOrResize = () => {
+      if (rafId === null) {
+        rafId = requestAnimationFrame(() => {
+          updateActiveSection();
+          rafId = null;
+        });
+      }
+    };
+
+    window.addEventListener('scroll', onScrollOrResize, { passive: true });
+    window.addEventListener('resize', onScrollOrResize, { passive: true });
+
+    // Initial check on mount
+    updateActiveSection();
+
+    return () => {
+      window.removeEventListener('scroll', onScrollOrResize);
+      window.removeEventListener('resize', onScrollOrResize);
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId);
+      }
+    };
   }, []);
 
   // Smooth scroll handler with instant active update
   const scrollToSection = useCallback((section: string) => {
+    manualSelectionUntilRef.current = Date.now() + 850;
     setActiveSection(section);
     triggerHaptic(14);
 

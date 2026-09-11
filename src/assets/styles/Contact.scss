@@ -357,7 +357,7 @@
   padding: 0.6rem 1.8rem;
   border-radius: var(--radius-full);
   background: var(--gradient-brand);
-  color: #fff;
+  color: #fff !important;
   border: none;
   box-shadow: var(--shadow-md);
   text-transform: none;
@@ -365,10 +365,34 @@
     box-shadow 0.3s ease,
     opacity 0.2s ease;
 
+  span,
+  svg,
+  .send-icon,
+  .MuiButton-endIcon {
+    color: #ffffff !important;
+    fill: currentColor !important;
+  }
+
   &:hover {
     box-shadow: var(--shadow-glow-primary), var(--shadow-lg);
     background: var(--gradient-brand);
     opacity: 0.92;
+    color: #ffffff !important;
+
+    span,
+    svg,
+    .send-icon {
+      color: #ffffff !important;
+    }
+  }
+
+  &.Mui-disabled,
+  &:disabled {
+    background: var(--gradient-brand) !important;
+    color: rgba(255, 255, 255, 0.85) !important;
+    opacity: 0.75;
+    cursor: not-allowed;
+    box-shadow: none;
   }
 
   // SendIcon slide right on button hover
@@ -378,6 +402,20 @@
 
   .MuiButton-endIcon {
     margin-left: 0.5rem;
+  }
+}
+
+// Ensure light mode never overrides button text or icon color to black
+.light-mode .contact-btn.MuiButton-root {
+  color: #ffffff !important;
+
+  span,
+  svg,
+  .send-icon,
+  .MuiButton-endIcon,
+  .MuiButton-endIcon svg {
+    color: #ffffff !important;
+    fill: currentColor !important;
   }
 }
 
@@ -393,7 +431,7 @@
   position: relative;
 }
 
-// ─── Success toast ────────────────────────────────────────────────────────────
+// ─── Success & error toast ────────────────────────────────────────────────────
 .contact-toast {
   display: flex;
   align-items: flex-start;
@@ -423,6 +461,33 @@
       animation: none;
       display: none;
     }
+  }
+
+  &--error {
+    border-color: rgba(239, 68, 68, 0.45);
+    background: linear-gradient(145deg, var(--bg-elevated), rgba(239, 68, 68, 0.08));
+    box-shadow: 0 4px 24px rgba(239, 68, 68, 0.15), var(--shadow-md);
+
+    &::after {
+      background: linear-gradient(90deg, #ef4444, #f97316);
+      animation-duration: 6.5s;
+    }
+
+    .contact-toast__icon {
+      color: #ef4444;
+    }
+  }
+}
+
+.contact-toast__link {
+  color: var(--accent-secondary-light, #38bdf8);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-weight: 500;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 0.8;
   }
 }
 

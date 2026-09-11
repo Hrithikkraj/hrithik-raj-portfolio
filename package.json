@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "https://hrithikkraj.github.io/hrithik-raj-portfolio",
   "dependencies": {
+    "@emailjs/browser": "^4.4.1",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
@@ -19,6 +20,7 @@
     "@types/node": "^16.18.98",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
+    "caniuse-lite": "^1.0.30001810",
     "clsx": "^2.1.1",
     "framer-motion": "^13.2.0",
     "gsap": "^3.15.0",
@@ -59,6 +61,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@types/react-vertical-timeline-component": "^3.3.6",
     "gh-pages": "^6.3.0"
   }

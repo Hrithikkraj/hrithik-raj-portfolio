@@ -94,7 +94,6 @@ function CountUp({ to, suffix = '' }: { to: number; suffix?: string }) {
 }
 
 // ─── Particle burst (competitive icon hover) ─────────────────────────────────
-const PARTICLE_COUNT = 5;
 const PARTICLE_ANGLES = [0, 72, 144, 216, 288]; // evenly spread
 
 function ParticleBurst({ active }: { active: boolean }) {

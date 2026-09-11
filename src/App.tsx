@@ -39,11 +39,6 @@ function App() {
         }
     };
 
-    const scrollToSection = (id: string) => {
-        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        triggerHaptic(12);
-    };
-
     const scrollToElement = (element: HTMLElement) => {
         element.scrollIntoView({ behavior: 'smooth', block: 'start' });
         triggerHaptic(12);
@@ -99,7 +94,7 @@ function App() {
             window.removeEventListener('touchstart', handleTouchStart);
             window.removeEventListener('touchend', handleTouchEnd);
         };
-    }, []);
+    }, [reducedMotion]);
 
     useEffect(() => {
         const handleScroll = () => setShowBackToTop(window.scrollY > window.innerHeight * 0.75);
