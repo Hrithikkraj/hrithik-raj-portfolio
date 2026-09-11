@@ -159,31 +159,6 @@
   }
 }
 
-.github-activity-aside__details {
-  display: flex;
-  flex-direction: column;
-  gap: 0.85rem;
-  padding: 1rem 0;
-  border-top: 1px solid var(--border-subtle);
-  border-bottom: 1px solid var(--border-subtle);
-
-  > div {
-    display: flex;
-    align-items: center;
-    gap: 0.65rem;
-    color: var(--text-secondary);
-    font-family: var(--font-body);
-    font-size: var(--text-xs);
-  }
-}
-
-.github-activity-aside__detail-mark {
-  color: var(--accent-secondary-light);
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  font-weight: 600;
-}
-
 .leetcode-block {
   margin-top: 3.5rem;
 }

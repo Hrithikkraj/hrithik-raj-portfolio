@@ -106,7 +106,27 @@
   object-position: center;
   display: block;
   will-change: transform;
+  filter: grayscale(35%) contrast(1.05) brightness(0.92);
+  transition: filter 0.4s ease;
   // scale driven by framer-motion inline style
+}
+
+.proj-card__duotone,
+.proj-card__vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.proj-card__duotone {
+  z-index: 1;
+  background: linear-gradient(135deg, rgba(124, 58, 237, 0.35) 0%, rgba(6, 182, 212, 0.25) 100%);
+  mix-blend-mode: color;
+}
+
+.proj-card__vignette {
+  z-index: 2;
+  background: radial-gradient(ellipse at center, transparent 40%, rgba(5, 5, 12, 0.5) 100%);
 }
 
 // ─── Gradient overlay over image ─────────────────────────────────────────────
@@ -116,6 +136,7 @@
 .proj-card__gradient {
   position: absolute;
   inset: 0;
+  z-index: 3;
   background: linear-gradient(
     to top,
     rgba(5, 5, 12, 0.97) 0%,
@@ -134,16 +155,37 @@
   mix-blend-mode: overlay;
 }
 
+// ─── Localized frosted panel behind card text ────────────────────────────────
+.proj-card__text-panel {
+  position: absolute;
+  z-index: 4;
+  bottom: 1rem;
+  left: 50%;
+  width: fit-content;
+  max-width: calc(100% - 2rem);
+  transform: translateX(-50%) translateZ(30px);
+  padding: 0.85rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg);
+  background: rgba(5, 5, 12, 0.38);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: background 0.4s ease, border-color 0.4s ease;
+}
+
+.proj-card-wrap:hover .proj-card__text-panel {
+  background: rgba(5, 5, 12, 0.44);
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
 // ─── Content layer (floats above image via translateZ) ────────────────────────
 .proj-card__content {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 1.25rem 1.25rem 1.1rem;
+  position: relative;
+  padding: 0;
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
+  z-index: 5;
 }
 
 .proj-card__title {
@@ -192,6 +234,45 @@
   color: var(--text-muted);
   letter-spacing: 0.06em;
   margin-top: 0.15rem;
+}
+
+// Light mode: let project cards belong to the warm page palette while keeping
+// the image scrim and hover treatment strong enough for readable content.
+.light-mode .proj-card {
+  border-color: var(--border-default);
+  box-shadow: var(--shadow-md);
+
+  &:hover {
+    border-color: var(--accent-primary);
+    box-shadow: var(--shadow-lg), var(--shadow-glow-subtle);
+  }
+}
+
+.light-mode .proj-card__text-panel {
+  background: rgba(255, 253, 248, 0.88);
+  border-color: rgba(90, 70, 40, 0.16);
+  box-shadow: 0 8px 24px rgba(60, 45, 20, 0.14);
+}
+
+.light-mode .proj-card-wrap:hover .proj-card__text-panel {
+  background: rgba(255, 253, 248, 0.94);
+  border-color: rgba(109, 40, 217, 0.28);
+}
+
+.light-mode .proj-card__content .proj-card__title {
+  color: var(--text-primary) !important;
+}
+
+.light-mode .proj-card__content .proj-card__date {
+  color: var(--accent-secondary-dark) !important;
+}
+
+.light-mode .proj-card__content .proj-card__hint {
+  color: var(--text-secondary) !important;
+}
+
+.light-mode .proj-card__content .proj-card__tag {
+  color: var(--accent-primary-dark) !important;
 }
 
 // ─── GitHub corner button ─────────────────────────────────────────────────────

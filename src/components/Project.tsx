@@ -173,9 +173,15 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, onClick }) =>
             className="proj-card__img"
             style={{
               scale: hovered ? 1.06 : 1,
+              filter: hovered
+                ? 'grayscale(15%) contrast(1.05) brightness(1)'
+                : 'grayscale(35%) contrast(1.05) brightness(0.92)',
               transition: 'scale 0.55s cubic-bezier(0.16,1,0.3,1)',
             }}
           />
+          {/* Accent tint and edge vignette normalize varied source artwork. */}
+          <div className="proj-card__duotone" aria-hidden="true" />
+          <div className="proj-card__vignette" aria-hidden="true" />
           {/* Gradient overlay */}
           <div className="proj-card__gradient" aria-hidden="true" />
         </div>
@@ -197,38 +203,40 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, index, onClick }) =>
         </AnimatePresence>
 
         {/* ── Content layer — floats above image ──────────────────────── */}
-        <div className="proj-card__content" style={{ transform: 'translateZ(40px)' }}>
-          <motion.h2
-            layoutId={`project-title-${project.id}`}
-            className="proj-card__title"
-          >
-            {project.title}
-          </motion.h2>
-          <p className="proj-card__date">{project.date}</p>
+        <div className="proj-card__text-panel">
+          <div className="proj-card__content" style={{ transform: 'translateZ(40px)' }}>
+            <motion.h2
+              layoutId={`project-title-${project.id}`}
+              className="proj-card__title"
+            >
+              {project.title}
+            </motion.h2>
+            <p className="proj-card__date">{project.date}</p>
 
-          {/* Tech tags — visible on hover */}
-          <motion.div
-            className="proj-card__tags"
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: hovered ? 1 : 0, y: hovered ? 0 : 8 }}
-            transition={{ duration: 0.3, ease: 'easeOut' }}
-            aria-label="Tech stack"
-          >
-            {project.techTags.slice(0, 4).map(tag => (
-              <span key={tag} className="proj-card__tag">{tag}</span>
-            ))}
-          </motion.div>
+            {/* Tech tags — visible on hover */}
+            <motion.div
+              className="proj-card__tags"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: hovered ? 1 : 0, y: hovered ? 0 : 8 }}
+              transition={{ duration: 0.3, ease: 'easeOut' }}
+              aria-label="Tech stack"
+            >
+              {project.techTags.slice(0, 4).map(tag => (
+                <span key={tag} className="proj-card__tag">{tag}</span>
+              ))}
+            </motion.div>
 
-          {/* Expand hint */}
-          <motion.div
-            className="proj-card__hint"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: hovered ? 1 : 0 }}
-            transition={{ duration: 0.25 }}
-            aria-hidden="true"
-          >
-            Click to expand ↗
-          </motion.div>
+            {/* Expand hint */}
+            <motion.div
+              className="proj-card__hint"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: hovered ? 1 : 0 }}
+              transition={{ duration: 0.25 }}
+              aria-hidden="true"
+            >
+              Click to expand ↗
+            </motion.div>
+          </div>
         </div>
 
         {/* GitHub corner link */}

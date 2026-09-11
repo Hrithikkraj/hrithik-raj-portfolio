@@ -194,21 +194,6 @@ const GitHubActivity: React.FC = () => {
               <p>Explore the projects, experiments, and ideas I am building in public.</p>
             </div>
 
-            <div className="github-activity-aside__details">
-              <div>
-                <span className="github-activity-aside__detail-mark" aria-hidden="true">01</span>
-                <span>Full-stack products</span>
-              </div>
-              <div>
-                <span className="github-activity-aside__detail-mark" aria-hidden="true">02</span>
-                <span>ML and systems experiments</span>
-              </div>
-              <div>
-                <span className="github-activity-aside__detail-mark" aria-hidden="true">03</span>
-                <span>Consistent learning in public</span>
-              </div>
-            </div>
-
             {!hasError && (
               <div className="github-stats" aria-label="GitHub profile statistics">
                 {[
