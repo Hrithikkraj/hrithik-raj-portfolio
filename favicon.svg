@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="brand" x1="8" y1="8" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7c3aed"/>
+      <stop offset="1" stop-color="#06b6d4"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="#0e0e14"/>
+  <rect x="3" y="3" width="58" height="58" rx="14" fill="none" stroke="url(#brand)" stroke-width="3"/>
+  <text x="32" y="40" fill="#f0f0ff" font-family="Georgia, 'Times New Roman', serif" font-size="24" font-weight="700" text-anchor="middle">HR</text>
+</svg>

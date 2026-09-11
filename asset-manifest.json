@@ -1,9 +1,11 @@
 {
   "files": {
-    "main.css": "/hrithik-raj-portfolio/static/css/main.35fc5e70.css",
-    "main.js": "/hrithik-raj-portfolio/static/js/main.0c32564d.js",
+    "main.css": "/hrithik-raj-portfolio/static/css/main.8c97a26a.css",
+    "main.js": "/hrithik-raj-portfolio/static/js/main.2a407c49.js",
     "static/css/568.0d484dc7.chunk.css": "/hrithik-raj-portfolio/static/css/568.0d484dc7.chunk.css",
     "static/js/568.c6aef49a.chunk.js": "/hrithik-raj-portfolio/static/js/568.c6aef49a.chunk.js",
+    "static/css/132.43ea1571.chunk.css": "/hrithik-raj-portfolio/static/css/132.43ea1571.chunk.css",
+    "static/js/132.f130b9af.chunk.js": "/hrithik-raj-portfolio/static/js/132.f130b9af.chunk.js",
     "static/js/448.65f8dfaf.chunk.js": "/hrithik-raj-portfolio/static/js/448.65f8dfaf.chunk.js",
     "static/js/486.0190da8c.chunk.js": "/hrithik-raj-portfolio/static/js/486.0190da8c.chunk.js",
     "static/media/angrybird.jpg": "/hrithik-raj-portfolio/static/media/angrybird.d2bf3a6b33339406a2ea.jpg",
@@ -18,7 +20,7 @@
     "index.html": "/hrithik-raj-portfolio/index.html"
   },
   "entrypoints": [
-    "static/css/main.35fc5e70.css",
-    "static/js/main.0c32564d.js"
+    "static/css/main.8c97a26a.css",
+    "static/js/main.2a407c49.js"
   ]
 }
