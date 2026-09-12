@@ -9,7 +9,6 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import SendIcon from '@mui/icons-material/Send';
 import CheckIcon from '@mui/icons-material/Check';
-import TextField from '@mui/material/TextField';
 import '../assets/styles/Contact.scss';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
@@ -48,6 +47,7 @@ interface FieldWrapProps {
   focused: boolean;
   valid: boolean;
   id: string;
+  isTextarea?: boolean;
 }
 
 const shakeVariants: Variants = {
@@ -58,7 +58,7 @@ const shakeVariants: Variants = {
   },
 };
 
-function FieldWrap({ children, hasError, focused, valid, id }: FieldWrapProps) {
+function FieldWrap({ children, hasError, focused, valid, id, isTextarea }: FieldWrapProps) {
   const reduced = prefersReduced();
   const [shakeKey, setShakeKey] = useState(0);
   const prevError = useRef(hasError);
@@ -73,7 +73,7 @@ function FieldWrap({ children, hasError, focused, valid, id }: FieldWrapProps) {
 
   return (
     <motion.div
-      className={`contact-field-wrap${focused ? ' contact-field-wrap--focused' : ''}${hasError ? ' contact-field-wrap--error' : ''}${valid ? ' contact-field-wrap--valid' : ''}`}
+      className={`contact-field-wrap${focused ? ' contact-field-wrap--focused' : ''}${hasError ? ' contact-field-wrap--error' : ''}${valid ? ' contact-field-wrap--valid' : ''}${isTextarea ? ' contact-field-wrap--textarea' : ''}`}
       key={`shake-${shakeKey}`}
       variants={reduced ? {} : shakeVariants}
       animate={shakeKey > 0 && !reduced ? 'shake' : 'idle'}
@@ -251,20 +251,31 @@ function Contact() {
               valid={nameValid}
               id="contact-name"
             >
-              <TextField
-                required
-                fullWidth
-                id="contact-name"
-                label="Your Name"
-                placeholder="What's your name?"
-                value={name}
-                onChange={e => { setName(e.target.value); if (nameError) setNameError(false); }}
-                onFocus={() => setNameFocused(true)}
-                onBlur={() => setNameFocused(false)}
-                error={nameError}
-                helperText={nameError ? 'Please enter your name' : ''}
-                inputProps={{ 'aria-describedby': nameError ? 'name-error' : undefined }}
-              />
+              <div className="cf-field">
+                <label htmlFor="contact-name" className="cf-label">
+                  Your Name
+                  <span className="cf-required" aria-hidden="true"> *</span>
+                </label>
+                <input
+                  id="contact-name"
+                  type="text"
+                  required
+                  className={`cf-input${nameError ? ' cf-input--error' : ''}`}
+                  placeholder="What's your name?"
+                  value={name}
+                  onChange={e => { setName(e.target.value); if (nameError) setNameError(false); }}
+                  onFocus={() => setNameFocused(true)}
+                  onBlur={() => setNameFocused(false)}
+                  aria-required="true"
+                  aria-invalid={nameError}
+                  aria-describedby={nameError ? 'name-error' : undefined}
+                />
+                {nameError && (
+                  <span id="name-error" className="cf-helper cf-helper--error" role="alert">
+                    Please enter your name
+                  </span>
+                )}
+              </div>
             </FieldWrap>
 
             {/* Email */}
@@ -274,20 +285,31 @@ function Contact() {
               valid={emailValid}
               id="contact-email"
             >
-              <TextField
-                required
-                fullWidth
-                id="contact-email"
-                label="Email / Phone"
-                placeholder="How can I reach you?"
-                value={email}
-                onChange={e => { setEmail(e.target.value); if (emailError) setEmailError(false); }}
-                onFocus={() => setEmailFocused(true)}
-                onBlur={() => setEmailFocused(false)}
-                error={emailError}
-                helperText={emailError ? 'Please enter your email or phone number' : ''}
-                inputProps={{ 'aria-describedby': emailError ? 'email-error' : undefined }}
-              />
+              <div className="cf-field">
+                <label htmlFor="contact-email" className="cf-label">
+                  Email / Phone
+                  <span className="cf-required" aria-hidden="true"> *</span>
+                </label>
+                <input
+                  id="contact-email"
+                  type="text"
+                  required
+                  className={`cf-input${emailError ? ' cf-input--error' : ''}`}
+                  placeholder="How can I reach you?"
+                  value={email}
+                  onChange={e => { setEmail(e.target.value); if (emailError) setEmailError(false); }}
+                  onFocus={() => setEmailFocused(true)}
+                  onBlur={() => setEmailFocused(false)}
+                  aria-required="true"
+                  aria-invalid={emailError}
+                  aria-describedby={emailError ? 'email-error' : undefined}
+                />
+                {emailError && (
+                  <span id="email-error" className="cf-helper cf-helper--error" role="alert">
+                    Please enter your email or phone number
+                  </span>
+                )}
+              </div>
             </FieldWrap>
           </motion.div>
 
@@ -298,23 +320,33 @@ function Contact() {
               focused={messageFocused}
               valid={messageValid}
               id="contact-message"
+              isTextarea
             >
-              <TextField
-                required
-                fullWidth
-                id="contact-message"
-                label="Message"
-                placeholder="Send me any inquiries or questions"
-                multiline
-                rows={10}
-                value={message}
-                onChange={e => { setMessage(e.target.value); if (messageError) setMessageError(false); }}
-                onFocus={() => setMessageFocused(true)}
-                onBlur={() => setMessageFocused(false)}
-                error={messageError}
-                helperText={messageError ? 'Please enter the message' : ''}
-                inputProps={{ 'aria-describedby': messageError ? 'message-error' : undefined }}
-              />
+              <div className="cf-field">
+                <label htmlFor="contact-message" className="cf-label">
+                  Message
+                  <span className="cf-required" aria-hidden="true"> *</span>
+                </label>
+                <textarea
+                  id="contact-message"
+                  required
+                  rows={10}
+                  className={`cf-input cf-input--textarea${messageError ? ' cf-input--error' : ''}`}
+                  placeholder="Send me any inquiries or questions"
+                  value={message}
+                  onChange={e => { setMessage(e.target.value); if (messageError) setMessageError(false); }}
+                  onFocus={() => setMessageFocused(true)}
+                  onBlur={() => setMessageFocused(false)}
+                  aria-required="true"
+                  aria-invalid={messageError}
+                  aria-describedby={messageError ? 'message-error' : undefined}
+                />
+                {messageError && (
+                  <span id="message-error" className="cf-helper cf-helper--error" role="alert">
+                    Please enter the message
+                  </span>
+                )}
+              </div>
             </FieldWrap>
           </motion.div>
 

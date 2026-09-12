@@ -12,6 +12,7 @@ import Footer from './components/Footer';
 import FadeIn from './components/FadeIn';
 import CustomCursor from './components/CustomCursor';
 import PageLoader from './components/PageLoader';
+import PhotoGallery from './components/PhotoGallery';
 import './index.scss';
 
 const Project = lazy(() => import('./components/Project'));
@@ -163,6 +164,7 @@ function App() {
                 <FadeIn transitionDuration={700}>
                     <Main/>
                     <About/>
+                    <PhotoGallery/>
                     <Expertise/>
                     <Timeline/>
                     <Suspense fallback={<div className="section-loading-placeholder" aria-label="Loading projects" />}>

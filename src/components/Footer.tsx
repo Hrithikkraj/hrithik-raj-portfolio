@@ -53,7 +53,7 @@ function Footer() {
             <strong className="accent-text">Talk</strong>
           </h2>
           <p>
-            Feel free to reach out anytime — I'm always open to connecting, collaborating, or just talking about interesting problems.
+            Feel free to reach out anytime. I'm always open to connecting, collaborating, or just talking about interesting problems.
           </p>
           <motion.a
             className="footer-email-button cursor-hover"
@@ -105,7 +105,7 @@ function Footer() {
 
       <div className="footer-divider" />
       <div className="footer-bottom">
-        <p>© 2026 Hrithik Raj. All Rights Reserved.</p>
+        <p>© 2026 Hrithik Raj, New Delhi, India.</p>
         <p>Built with React, Three.js &amp; a lot of curiosity</p>
       </div>
     </footer>

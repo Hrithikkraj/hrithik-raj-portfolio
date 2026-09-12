@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import '../assets/styles/Activity.scss';
+import tugFinal from '../assets/images/tug-of-war-final.jpeg';
+import tugWiring from '../assets/images/tug-of-war-wiring.jpeg';
+import tugArduino from '../assets/images/tug-of-war-arduino.jpeg';
+import tugHolding from '../assets/images/tug-of-war-holding.jpeg';
 
 const GITHUB_USERNAME = 'Hrithikkraj';
 const GITHUB_PROFILE = `https://github.com/${GITHUB_USERNAME}`;
@@ -291,6 +295,132 @@ const GitHubActivity: React.FC = () => {
               <span aria-hidden="true">↗</span>
             </motion.a>
           </div>
+        </div>
+
+        {/* ── Side Quest Block ────────────────────────────────────────────── */}
+        <div className="side-quest-block">
+          <div className="activity-subheading side-quest-subheading">
+            <div className="side-quest-badge">
+              <span className="side-quest-badge__icon" aria-hidden="true">🎮</span>
+              <span>Just for fun — not a resume project</span>
+            </div>
+            <h2>Side Quest: Digital Tug of War</h2>
+            <p className="side-quest-description">
+              Built as a late night hardware jam, this is a physical two player tug of war game using a 60 LED addressable strip as the glowing rope. Players furiously mash arcade buttons to yank the red LED &ldquo;flag&rdquo; to their endzone, trigger a one time, high voltage BOOST power move when pinned, and wave over an ultrasonic sensor for an instant touchless kickoff.
+            </p>
+          </div>
+
+          <div className="side-quest-tags" aria-label="Project features">
+            <span className="side-quest-tag side-quest-tag--leds">
+              <span className="side-quest-tag__emoji" aria-hidden="true">🌈</span> 60 addressable LEDs
+            </span>
+            <span className="side-quest-tag side-quest-tag--sensor">
+              <span className="side-quest-tag__emoji" aria-hidden="true">👋</span> Touchless start
+            </span>
+            <span className="side-quest-tag side-quest-tag--buzzer">
+              <span className="side-quest-tag__emoji" aria-hidden="true">🔊</span> Buzzer feedback
+            </span>
+            <span className="side-quest-tag side-quest-tag--boost">
+              <span className="side-quest-tag__emoji" aria-hidden="true">💥</span> One-time BOOST move
+            </span>
+          </div>
+
+          <motion.div
+            className="side-quest-scrapbook"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={{
+              hidden: {},
+              visible: {
+                transition: {
+                  staggerChildren: reducedMotion ? 0 : 0.12,
+                },
+              },
+            }}
+          >
+            {[
+              {
+                id: 'final',
+                image: tugFinal,
+                alt: 'Digital Tug of War finished build glowing with paper backdrop and vibrant LED strip',
+                caption: 'The finished build ✨',
+                rot: -5,
+                xOffset: -24,
+                yOffset: 20,
+              },
+              {
+                id: 'wiring',
+                image: tugWiring,
+                alt: 'Top-down view of the breadboard, wiring chaos, push buttons, and LED strip assembly',
+                caption: 'Wiring chaos 🔌',
+                rot: 4,
+                xOffset: 16,
+                yOffset: -16,
+              },
+              {
+                id: 'arduino',
+                image: tugArduino,
+                alt: 'Close-up of Arduino Uno microcontroller and breadboard jumper wires',
+                caption: 'Brains of the operation 🧠',
+                rot: -3,
+                xOffset: -12,
+                yOffset: 24,
+              },
+              {
+                id: 'holding',
+                image: tugHolding,
+                alt: 'Teammate holding the hand-painted starry night sky MDF enclosure',
+                caption: 'Starry night finish 🎨',
+                rot: 6,
+                xOffset: 20,
+                yOffset: -12,
+              },
+            ].map((photo, index) => (
+              <motion.div
+                key={photo.id}
+                className={`side-quest-polaroid side-quest-polaroid--${index + 1}`}
+                variants={{
+                  hidden: reducedMotion
+                    ? { opacity: 0 }
+                    : {
+                      opacity: 0,
+                      x: photo.xOffset,
+                      y: photo.yOffset,
+                      rotate: photo.rot * 1.8,
+                      scale: 0.92,
+                    },
+                  visible: {
+                    opacity: 1,
+                    x: 0,
+                    y: 0,
+                    rotate: reducedMotion ? 0 : photo.rot,
+                    scale: 1,
+                    transition: {
+                      duration: reducedMotion ? 0.3 : 0.65,
+                      ease: [0.16, 1, 0.3, 1],
+                    },
+                  },
+                }}
+                whileHover={
+                  reducedMotion
+                    ? undefined
+                    : {
+                      rotate: 0,
+                      scale: 1.05,
+                      y: -8,
+                      zIndex: 20,
+                      transition: { duration: 0.25, ease: [0.16, 1, 0.3, 1] },
+                    }
+                }
+              >
+                <div className="side-quest-polaroid__image-wrap">
+                  <img src={photo.image} alt={photo.alt} loading="lazy" />
+                </div>
+                <p className="side-quest-polaroid__caption">{photo.caption}</p>
+              </motion.div>
+            ))}
+          </motion.div>
         </div>
       </motion.div>
     </section>
