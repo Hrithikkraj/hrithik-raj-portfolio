@@ -741,3 +741,280 @@
     gap: 1.5rem;
   }
 }
+
+// ── Side Quest: Vintage Table Lamp (3D Model) ───────────────────
+@property --lamp-border-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@keyframes lamp-border-spin {
+  to {
+    --lamp-border-angle: 360deg;
+  }
+}
+
+@keyframes lamp-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.side-quest-block--lamp {
+  margin-top: 4.5rem;
+  padding-top: 3.5rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.lamp-quest-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) auto;
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: center;
+}
+
+.lamp-quest-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+
+  h2 {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: clamp(1.4rem, 2.6vw, 1.85rem);
+    font-weight: 700;
+  }
+
+  .side-quest-tags {
+    margin-bottom: 0;
+  }
+}
+
+.side-quest-tag {
+  &--fusion {
+    background: rgba(245, 158, 11, 0.12);
+    border: 1px solid rgba(245, 158, 11, 0.35);
+    color: #fcd34d;
+  }
+
+  &--parametric {
+    background: rgba(181, 135, 58, 0.14);
+    border: 1px solid rgba(181, 135, 58, 0.4);
+    color: #fbbf24;
+  }
+
+  &--interactive {
+    background: rgba(6, 182, 212, 0.12);
+    border: 1px solid rgba(6, 182, 212, 0.35);
+    color: #67e8f9;
+  }
+}
+
+.light-mode {
+  .side-quest-tag--fusion {
+    background: rgba(217, 119, 6, 0.08);
+    border-color: rgba(217, 119, 6, 0.25);
+    color: #b45309;
+  }
+  .side-quest-tag--parametric {
+    background: rgba(180, 83, 9, 0.08);
+    border-color: rgba(180, 83, 9, 0.25);
+    color: #92400e;
+  }
+  .side-quest-tag--interactive {
+    background: rgba(8, 145, 178, 0.08);
+    border-color: rgba(8, 145, 178, 0.25);
+    color: #0891b2;
+  }
+}
+
+.lamp-quest-viewer-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.lamp-glass-card {
+  position: relative;
+  width: 400px;
+  height: 400px;
+  max-width: 100%;
+  border-radius: var(--radius-xl);
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  box-shadow: var(--shadow-lg), 0 0 35px rgba(245, 158, 11, 0.09);
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+
+  // Permanent slow rotating conic-gradient border
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: calc(var(--radius-xl) + 2px);
+    background: conic-gradient(
+      from var(--lamp-border-angle, 0deg),
+      #f59e0b 0%,
+      #b5873a 22%,
+      rgba(245, 158, 11, 0.12) 42%,
+      transparent 52%,
+      rgba(6, 182, 212, 0.15) 65%,
+      #38d4f0 82%,
+      #f59e0b 100%
+    );
+    z-index: -2;
+    animation: lamp-border-spin 7s linear infinite;
+
+    @media (prefers-reduced-motion: reduce) {
+      animation: none;
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.4), rgba(6, 182, 212, 0.3));
+    }
+  }
+
+  // Inner background fill
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 1.5px;
+    border-radius: calc(var(--radius-xl) - 1.5px);
+    background: var(--bg-elevated);
+    z-index: -1;
+  }
+}
+
+.light-mode .lamp-glass-card {
+  box-shadow: var(--shadow-md), 0 0 25px rgba(217, 119, 6, 0.08);
+}
+
+.lamp-viewer-canvas-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  overflow: hidden;
+
+  &--skeleton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.lamp-viewer__loading,
+.lamp-viewer__fallback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 100%;
+  height: 100%;
+  padding: 1.5rem;
+  box-sizing: border-box;
+  text-align: center;
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+
+  p {
+    margin: 0;
+  }
+}
+
+.lamp-viewer__loading-spinner {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  border: 3px solid rgba(245, 158, 11, 0.2);
+  border-top-color: #fbbf24;
+  border-radius: 50%;
+  animation: lamp-spin 0.9s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lamp-viewer__loading-spinner {
+    animation: none;
+  }
+}
+
+.lamp-viewer__fallback-icon {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.lamp-viewer__toggle {
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.7rem;
+  border: 1px solid rgba(255, 196, 76, 0.35);
+  border-radius: 999px;
+  background: rgba(14, 14, 23, 0.78);
+  color: var(--text-secondary);
+  font: 600 var(--text-xs) var(--font-body);
+  cursor: pointer;
+  transition: background 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+
+  &:hover,
+  &:focus-visible {
+    color: #fff7de;
+    border-color: rgba(255, 204, 91, 0.8);
+    outline: none;
+  }
+
+  &--on {
+    background: rgba(174, 103, 13, 0.44);
+    color: #fff7de;
+    box-shadow: 0 0 16px rgba(255, 174, 50, 0.48);
+  }
+}
+
+.lamp-viewer-helper {
+  margin: 0;
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  letter-spacing: 0.02em;
+  text-align: center;
+  user-select: none;
+}
+
+@media (max-width: 900px) {
+  .lamp-quest-layout {
+    grid-template-columns: 1fr;
+    gap: 2.25rem;
+  }
+
+  .lamp-glass-card {
+    width: 300px;
+    height: 300px;
+  }
+
+  .lamp-quest-viewer-col {
+    width: 100%;
+    align-items: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .side-quest-block--lamp {
+    margin-top: 3.5rem;
+    padding-top: 2.5rem;
+  }
+
+  .lamp-glass-card {
+    width: 260px;
+    height: 260px;
+  }
+}
+

@@ -6,6 +6,8 @@ import tugWiring from '../assets/images/tug-of-war-wiring.jpeg';
 import tugArduino from '../assets/images/tug-of-war-arduino.jpeg';
 import tugHolding from '../assets/images/tug-of-war-holding.jpeg';
 
+const LampViewer = React.lazy(() => import('./LampViewer'));
+
 const GITHUB_USERNAME = 'Hrithikkraj';
 const GITHUB_PROFILE = `https://github.com/${GITHUB_USERNAME}`;
 const CONTRIBUTION_GRAPH = `https://ghchart.rshah.org/7c3aed/${GITHUB_USERNAME}`;
@@ -421,6 +423,54 @@ const GitHubActivity: React.FC = () => {
               </motion.div>
             ))}
           </motion.div>
+        </div>
+
+        {/* ── Side Quest 2: Vintage Table Lamp (3D Model) ───────────────── */}
+        <div className="side-quest-block side-quest-block--lamp">
+          <div className="lamp-quest-layout">
+            <div className="lamp-quest-content">
+              <div className="side-quest-badge">
+                <span className="side-quest-badge__icon" aria-hidden="true">💡</span>
+                <span>💡 Design &amp; Making</span>
+              </div>
+              <h2>Side Quest: Vintage Table Lamp — 3D Model</h2>
+              <p className="side-quest-description">
+                A vintage-style table lamp modelled from scratch in Autodesk Fusion 360 for a 3D modelling course. Drag to orbit, watch it spin — it&apos;s fully interactive.
+              </p>
+
+              <div className="side-quest-tags" aria-label="3D model features">
+                <span className="side-quest-tag side-quest-tag--fusion">
+                  <span className="side-quest-tag__emoji" aria-hidden="true">💡</span> Autodesk Fusion 360
+                </span>
+                <span className="side-quest-tag side-quest-tag--parametric">
+                  <span className="side-quest-tag__emoji" aria-hidden="true">🔩</span> Parametric Modelling
+                </span>
+                <span className="side-quest-tag side-quest-tag--interactive">
+                  <span className="side-quest-tag__emoji" aria-hidden="true">🖱️</span> Drag to Orbit
+                </span>
+              </div>
+            </div>
+
+            <div className="lamp-quest-viewer-col">
+              <div className="lamp-glass-card">
+                <React.Suspense
+                  fallback={
+                    <div className="lamp-viewer-canvas-wrapper lamp-viewer-canvas-wrapper--skeleton">
+                      <div className="lamp-viewer__loading" role="status" aria-live="polite">
+                        <span className="lamp-viewer__loading-spinner" aria-hidden="true" />
+                        <p>Loading 3D model...</p>
+                      </div>
+                    </div>
+                  }
+                >
+                  <LampViewer />
+                </React.Suspense>
+              </div>
+              <p className="lamp-viewer-helper" role="note">
+                Click &amp; drag to rotate · Scroll to zoom
+              </p>
+            </div>
+          </div>
         </div>
       </motion.div>
     </section>
