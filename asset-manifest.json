@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/hrithik-raj-portfolio/static/css/main.69e44433.css",
+    "main.css": "/hrithik-raj-portfolio/static/css/main.1dd110ad.css",
     "main.js": "/hrithik-raj-portfolio/static/js/main.c7a82a52.js",
     "static/css/568.ef1b28fc.chunk.css": "/hrithik-raj-portfolio/static/css/568.ef1b28fc.chunk.css",
     "static/js/568.6194c7ee.chunk.js": "/hrithik-raj-portfolio/static/js/568.6194c7ee.chunk.js",
@@ -45,7 +45,7 @@
     "index.html": "/hrithik-raj-portfolio/index.html"
   },
   "entrypoints": [
-    "static/css/main.69e44433.css",
+    "static/css/main.1dd110ad.css",
     "static/js/main.c7a82a52.js"
   ]
 }
