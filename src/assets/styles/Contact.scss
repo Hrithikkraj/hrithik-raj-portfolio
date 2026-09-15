@@ -224,9 +224,10 @@
     box-shadow 0.3s var(--ease-smooth),
     background 0.3s ease;
 
-  // Focus glow lives on the wrap so it halos the entire label+box unit
+  // Keep the wrapper free of focus glow: it includes the label and would make
+  // the halo appear offset from the actual input border.
   &--focused {
-    box-shadow: 0 0 0 3px var(--accent-primary-subtle), var(--shadow-glow-subtle);
+    box-shadow: none;
   }
 
   // Error ring
@@ -318,11 +319,14 @@
     opacity: 1;
   }
 
-  // Focus — border + inner glow (outer glow is on the wrap)
+  // Focus — keep both the ring and halo aligned to the input itself.
   &:focus {
     border-color: var(--accent-primary);
     background: var(--bg-elevated);
-    box-shadow: inset 0 0 0 1px var(--accent-primary);
+    box-shadow:
+      inset 0 0 0 1px var(--accent-primary),
+      0 0 0 3px var(--accent-primary-subtle),
+      var(--shadow-glow-subtle);
   }
 
   // Hover (unfocused)
@@ -336,7 +340,10 @@
 
     &:focus {
       border-color: #ef4444;
-      box-shadow: inset 0 0 0 1px rgba(239, 68, 68, 0.6);
+      box-shadow:
+        inset 0 0 0 1px rgba(239, 68, 68, 0.6),
+        0 0 0 3px rgba(239, 68, 68, 0.16),
+        0 0 18px rgba(239, 68, 68, 0.16);
     }
   }
 
@@ -614,7 +621,7 @@
 
   // Still show focus glow but without transition
   .contact-field-wrap--focused {
-    box-shadow: 0 0 0 3px var(--accent-primary-subtle);
+    box-shadow: none;
   }
 }
 
