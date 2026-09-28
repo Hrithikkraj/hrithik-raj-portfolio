@@ -31,9 +31,8 @@
 // ── Animated Central Drawing Progress Line ───────────────────
 .timeline-progress-line {
   position: absolute;
-  top: 24px;
-  bottom: 24px;
-  width: 4px;
+  top: 0;
+  width: 3px;
   height: 0%;
   border-radius: 9999px;
   background: linear-gradient(
@@ -263,6 +262,11 @@
 
 // ── Mobile Responsive Overrides ──────────────────────────────
 @media screen and (max-width: 1169px) {
+  .vertical-timeline {
+    width: 100% !important;
+    margin: 0 !important;
+  }
+
   .vertical-timeline-element-content .vertical-timeline-element-date {
     display: block !important;
     float: none !important;
