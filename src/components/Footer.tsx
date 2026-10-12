@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from 'framer-motion';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
+import PhoneOutlinedIcon from '@mui/icons-material/PhoneOutlined';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
@@ -9,6 +10,7 @@ import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import '../assets/styles/Footer.scss';
 
 const contactEmail = 'hrithk23245@iiitd.ac.in';
+const phoneNumber = '+91-99906 53367'; // Replace this with your phone number.
 
 const navigationLinks: [string, string][] = [
   ['About', 'about'],
@@ -55,15 +57,29 @@ function Footer() {
           <p>
             Feel free to reach out anytime. I'm always open to connecting, collaborating, or just talking about interesting problems.
           </p>
-          <motion.a
-            className="footer-email-button cursor-hover"
-            href={`mailto:${contactEmail}`}
-            whileHover={motionEnabled ? { scale: 1.04 } : undefined}
-            whileTap={motionEnabled ? { scale: 0.97 } : undefined}
-          >
-            <MailOutlineIcon fontSize="small" />
-            <span>{contactEmail}</span>
-          </motion.a>
+          <div className="footer-contact-buttons">
+            <motion.a
+              className="footer-contact-button cursor-hover"
+              href={`mailto:${contactEmail}`}
+              aria-label={`Email ${contactEmail}`}
+              whileHover={motionEnabled ? { scale: 1.04 } : undefined}
+              whileTap={motionEnabled ? { scale: 0.97 } : undefined}
+            >
+              <MailOutlineIcon fontSize="small" />
+              <span>{contactEmail}</span>
+            </motion.a>
+
+            <motion.a
+              className="footer-contact-button cursor-hover"
+              href={`tel:${phoneNumber.replace(/[^\d+]/g, '')}`}
+              aria-label={`Call ${phoneNumber}`}
+              whileHover={motionEnabled ? { scale: 1.04 } : undefined}
+              whileTap={motionEnabled ? { scale: 0.97 } : undefined}
+            >
+              <PhoneOutlinedIcon fontSize="small" />
+              <span>{phoneNumber}</span>
+            </motion.a>
+          </div>
         </div>
 
         <div className="footer-links-area">

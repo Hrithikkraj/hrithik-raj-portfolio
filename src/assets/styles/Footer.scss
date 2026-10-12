@@ -48,7 +48,14 @@
     }
 }
 
-.footer-email-button {
+.footer-contact-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.8rem;
+}
+
+.footer-contact-button {
     display: inline-flex;
     align-items: center;
     gap: 0.65rem;
@@ -75,9 +82,9 @@
     svg { flex: 0 0 auto; }
 }
 
-.light-mode .footer-email-button,
-.light-mode .footer-email-button span,
-.light-mode .footer-email-button svg {
+.light-mode .footer-contact-button,
+.light-mode .footer-contact-button span,
+.light-mode .footer-contact-button svg {
     color: #ffffff !important;
     fill: currentColor;
 }
@@ -212,7 +219,7 @@
         font-size: var(--text-base);
     }
 
-    .footer-email-button {
+    .footer-contact-button {
         width: 100%;
         justify-content: center;
     }
@@ -224,7 +231,7 @@
 
 @media (prefers-reduced-motion: reduce) {
     .footer-link,
-    .footer-email-button {
+    .footer-contact-button {
         transition: none;
     }
 
