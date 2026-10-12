@@ -17,8 +17,3 @@ Open http://localhost:3000 in your browser.
 npm run build
 ```
 
-## Contact
-
-- GitHub: https://github.com/Hrithikkraj
-- LinkedIn: https://www.linkedin.com/in/hrithikkraj/
-- Email: hrithk23245@iiitd.ac.in
